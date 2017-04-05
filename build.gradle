@@ -1,0 +1,73 @@
+group 'com.omisoft.server'
+
+version '1.0'
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+
+sourceCompatibility = 1.8
+
+repositories {
+    maven { url 'http://repo.omisoft.eu:8081/artifactory/virtual' }
+//    mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+
+    repositories {
+//    mavenCentral()
+
+        maven {
+            credentials {
+                username 'admin'
+                password 'asdqwe123@'
+            }
+            if (project.version.endsWith('-SNAPSHOT'))
+                url "http://repo.omisoft.eu:8081/artifactory/libs-snapshot-local"
+            else
+                url "http://repo.omisoft.eu:8081/artifactory/libs-release-local"
+        }
+
+    }
+}
+
+
+
+
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.7'
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.7'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.9.Final'
+    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile 'ch.qos.logback:logback-classic:1.0.13'
+    compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '3.2.2'
+    compile group: 'io.dropwizard.metrics', name: 'metrics-json', version: '3.2.2'
+    compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: '3.2.2'
+    compile group: 'org.eclipse.jetty', name: 'jetty-server', version:jetty_version
+    compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: jetty_version
+    compile group: 'org.eclipse.jetty.websocket',name:'javax-websocket-server-impl',version:jetty_version
+    compile group:'org.eclipse.jetty',name:'jetty-jmx',version:jetty_version
+    compile group:'org.eclipse.jetty',name:'jetty-servlet',version: jetty_version
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '3.1.1.Final'
+    compile 'org.jboss.resteasy:resteasy-servlet-initializer:3.1.1.Final'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-guice', version: '3.1.1.Final'
+    compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: '4.1.0'
+    compile group: 'com.google.inject.extensions', name: 'guice-multibindings', version: '4.1.0'
+    compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
+    compile 'org.postgresql:postgresql:42.0.0'
+
+
+
+}
