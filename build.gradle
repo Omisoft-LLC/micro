@@ -9,8 +9,9 @@ apply plugin: 'maven-publish'
 sourceCompatibility = 1.8
 
 repositories {
+    mavenCentral()
+    jcenter()
     maven { url 'http://repo.omisoft.eu:8081/artifactory/virtual' }
-//    mavenCentral()
 }
 
 publishing {
@@ -21,7 +22,6 @@ publishing {
     }
 
     repositories {
-//    mavenCentral()
 
         maven {
             credentials {
@@ -67,6 +67,7 @@ dependencies {
     compile group: 'com.google.inject.extensions', name: 'guice-multibindings', version: '4.1.0'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
     compile 'org.postgresql:postgresql:42.0.0'
+    compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '4.34.2'
 
 
 

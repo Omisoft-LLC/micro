@@ -369,7 +369,7 @@ public class MicroServiceApp {
     @Override
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
       response.getWriter()
-          .append("{\"status\":\"GENERIC ERROR\",\"message\":\"HTTP ")
+          .append("{\"status\":\"GENERIC ERROR\",\"detailedMessage\":\"HTTP ")
           .append(String.valueOf(response.getStatus()))
           .append("\"}");
     }

@@ -7,11 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * ErrorDTO, transfers error messages to clients
  * Created by leozhekov on 11/1/16.
  */
 @Data
 public class ErrorDTO {
-  private String message;
+  private String detailedMessage;
 
   private Severity severity;
 
@@ -25,36 +26,41 @@ public class ErrorDTO {
   /**
    * Constructs new ErrorDto.
    *
-   * @param message error title
+   * @param detailedMessage error title
    */
-  public ErrorDTO(String err, String message) {
+  public ErrorDTO(String err, String detailedMessage) {
     this.err = err;
-    this.message = message;
+    this.detailedMessage = detailedMessage;
     // this.severity = Severity.ERROR;
 
   }
 
-  public ErrorDTO(String err, String message, Map<String, String> validationMessages) {
+  public ErrorDTO(String err, Throwable exception) {
     this.err = err;
-    this.message = message;
+    this.detailedMessage = exception.getMessage();
+  }
+
+  public ErrorDTO(String err, String detailedMessage, Map<String, String> validationMessages) {
+    this.err = err;
+    this.detailedMessage = detailedMessage;
     this.validationMessages = validationMessages;
   }
 
   /**
    * Constructs new error dto and set severity.
    *
-   * @param message  error title
+   * @param detailedMessage  error title
    * @param severity severity
    */
-  public ErrorDTO(String err, String message, Severity severity) {
+  public ErrorDTO(String err, String detailedMessage, Severity severity) {
     this.err = err;
-    this.message = message;
+    this.detailedMessage = detailedMessage;
     this.severity = severity;
   }
 
-  public ErrorDTO(String err, String message, Severity severity, int errorCode) {
+  public ErrorDTO(String err, String detailedMessage, Severity severity, int errorCode) {
     this.err = err;
-    this.message = message;
+    this.detailedMessage = detailedMessage;
     this.severity = severity;
     this.errorCode = errorCode;
   }

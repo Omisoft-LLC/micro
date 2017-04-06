@@ -247,7 +247,7 @@ final class ResponseUtil {
     if (responseStatus == HttpServletResponse.SC_NO_CONTENT) {
       if (LOG.isDebugEnabled()) {
         LOG.debug(request.getRequestURL() + " resulted in a " + HttpServletResponse.SC_NO_CONTENT
-            + " response. Removing message body in accordance with RFC2616.");
+            + " response. Removing detailedMessage body in accordance with RFC2616.");
       }
       return true;
     }
@@ -256,7 +256,7 @@ final class ResponseUtil {
     if (responseStatus == HttpServletResponse.SC_NOT_MODIFIED) {
       if (LOG.isDebugEnabled()) {
         LOG.debug(request.getRequestURL() + " resulted in a " + HttpServletResponse.SC_NOT_MODIFIED
-            + " response. Removing message body in accordance with RFC2616.");
+            + " response. Removing detailedMessage body in accordance with RFC2616.");
       }
       return true;
     }

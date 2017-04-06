@@ -1,6 +1,6 @@
 package com.omisoft.server.common.providers;
 
-import com.omisoft.keepassa.dto.rest.ErrorDTO;
+import com.omisoft.server.common.dto.ErrorDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.ws.rs.core.Response;
