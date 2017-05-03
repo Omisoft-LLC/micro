@@ -3,31 +3,26 @@ package com.omisoft.server.common.di;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.reflections.Reflections;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  * Created by dido on 16.03.17.
  */
+@Slf4j
 public class DbModule extends AbstractModule {
-  private final String packageName;
-//  private static final ThreadLocal<EntityManager> ENTITY_MANAGER_CACHE
-//      = new ThreadLocal<EntityManager>();
+  private final String persistenceUnitName;
+
 
   public DbModule() {
-    packageName = null;
+    persistenceUnitName = null;
   }
 
-  public DbModule(String packageName) {
-    this.packageName = packageName;
+  public DbModule(String persistenceUnitName) {
+    this.persistenceUnitName = persistenceUnitName;
   }
 
   @Override
@@ -37,32 +32,34 @@ public class DbModule extends AbstractModule {
 
   @Provides
   @Singleton
-  public SessionFactory provideEntityManagerFactory() {
-
-    StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
-        .configure("hibernate.cfg.xml")
-        .build();
-    MetadataSources ms = new MetadataSources(standardRegistry);
-    if (packageName != null) {
-      Reflections reflections = new Reflections(packageName);
-      Set<Class<?>> classes = reflections.getTypesAnnotatedWith(javax.persistence.Entity.class);
-
-      for (Class<?> clazz : classes) {
-        ms.addAnnotatedClass(clazz);
-      }
-    }
-    Metadata metadata = ms
-        .getMetadataBuilder()
-        .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
-        .build();
-    SessionFactory sessionFactory = metadata.getSessionFactoryBuilder()
-        .build();
-    return sessionFactory;
+  public EntityManagerFactory provideEntityManagerFactory() {
+    log.info("BEFORE PU CREATE");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    log.info("AA CREATING EMF:" + persistenceUnitName);
+    //    StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
+//        .configure("hibernate.cfg.xml")
+//        .build();
+//    MetadataSources ms = new MetadataSources(standardRegistry);
+//    if (packageName != null) {
+//      Reflections reflections = new Reflections(packageName);
+//      Set<Class<?>> classes = reflections.getTypesAnnotatedWith(javax.persistence.Entity.class);
+//
+//      for (Class<?> clazz : classes) {
+//        ms.addAnnotatedClass(clazz);
+//      }
+//    }
+//    Metadata metadata = ms
+//        .getMetadataBuilder()
+//        .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
+//        .build();
+//    SessionFactory sessionFactory = metadata.getSessionFactoryBuilder()
+//        .build();
+    return emf;
   }
 
   @Provides
-  public Session providesHibernateSession(SessionFactory sessionFactory) {
-    return sessionFactory.getCurrentSession();
+  public EntityManager providesEntityManager(EntityManagerFactory sessionFactory) {
+    return sessionFactory.createEntityManager();
   }
 
 }

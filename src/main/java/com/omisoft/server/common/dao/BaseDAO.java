@@ -6,9 +6,9 @@ import com.omisoft.server.common.exceptions.DataBaseException;
 import com.omisoft.server.common.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.Collection;
 import java.util.List;
@@ -21,10 +21,8 @@ import java.util.UUID;
 public abstract class BaseDAO<T extends BaseEntity> {
 
   private final Class<T> type;
-
-  private Session session;
   @Inject
-  private SessionFactory sessionFactory;
+  private EntityManager entityManager;
 
   protected BaseDAO(Class<T> type) {
     this.type = type;
@@ -37,7 +35,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
    */
   @SuppressWarnings(value = "unchecked")
   public List<T> findAll() throws NotFoundException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     Query q = session.createQuery("Select t from " + type.getSimpleName() + " t");
     List<T> found = q.getResultList();
     if (found != null) {
@@ -56,9 +54,12 @@ public abstract class BaseDAO<T extends BaseEntity> {
    * @return updated entity
    */
   public T update(T type) throws DataBaseException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
+    session.getTransaction().begin();
 
     T update = (T) session.merge(type);
+    session.getTransaction().commit();
+
     if (update != null) {
       return update;
     } else {
@@ -77,7 +78,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
    */
 
   public T findById(UUID id) throws NotFoundException, DataBaseException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     try {
       T found = session.find(type, id);
       if (found != null) {
@@ -93,10 +94,20 @@ public abstract class BaseDAO<T extends BaseEntity> {
 
 
   public T saveOrUpdate(T entity) throws DataBaseException {
-    Session session = getSession();
-    session.saveOrUpdate(entity);
+    EntityManager session = getEntityManager();
+    try {
+      session.getTransaction().begin();
+      entity = session.merge(entity);
+      session.getTransaction().commit();
+      return entity;
+    } catch (Throwable e) {
+      session.getTransaction().rollback();
 
-    return entity;
+      log.error("Error saving entity", e);
+      throw new DataBaseException(e);
+    }
+
+
 
   }
 
@@ -106,16 +117,21 @@ public abstract class BaseDAO<T extends BaseEntity> {
    * @param collection collection to save.
    */
   public void saveAll(Collection<T> collection) throws DataBaseException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     try {
+      session.getTransaction().begin();
       collection.stream().forEach(entity -> {
         if (entity.getId() == null) {
           session.persist(entity);
         } else {
-          session.merge(entity);
+          entity = session.merge(entity);
         }
       });
+      session.getTransaction().commit();
+
     } catch (Exception e) {
+      session.getTransaction().rollback();
+
       log.error("ERROR IN SAVE ALL", e);
       throw new DataBaseException(e);
 
@@ -128,23 +144,21 @@ public abstract class BaseDAO<T extends BaseEntity> {
    * @return
    */
 
-  public Session getSession() {
-    Session session = sessionFactory.getCurrentSession();
-//    Filter isActiveFilter = session.enableFilter(BaseEntity.IS_ACTIVE_FILTER_NAME);
-//    isActiveFilter.setParameter("isActive", Boolean.TRUE);
-    return session;
+  public EntityManager getEntityManager() {
+
+    return this.entityManager;
   }
 
   @SuppressWarnings(value = "unchecked")
 
   public List<T> findInRange(int firstResult, int maxResults) throws NotFoundException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     Query query = session.createQuery("Select t from " + type.getSimpleName() + " t");
     return (List<T>) query.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
   }
 
   public long count() {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
 
     Long count = (Long) session.createQuery("select count(t) from " + type.getSimpleName() + " t")
         .getSingleResult();
@@ -152,25 +166,35 @@ public abstract class BaseDAO<T extends BaseEntity> {
   }
 
   public void persist(T type) throws DataBaseException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     try {
+      session.getTransaction().begin();
+
       session.persist(type);
+      session.getTransaction().commit();
+
     } catch (Exception e) {
+      session.getTransaction().rollback();
       log.error("ERROR PERSISTING", e);
       throw new DataBaseException(e);
     }
   }
 
   public void persistAll(Collection<T> type) throws DataBaseException {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     try {
+      session.getTransaction().begin();
 
       for (T entity : type) {
         if (entity.getId() == null) {
           session.persist(entity);
         }
       }
+      session.getTransaction().commit();
+
     } catch (Exception e) {
+      session.getTransaction().rollback();
+
       log.error("ERROR!", e);
       throw new DataBaseException(e);
     }
@@ -189,10 +213,16 @@ public abstract class BaseDAO<T extends BaseEntity> {
 
   public void physicalDelete(UUID id) throws DataBaseException {
 
-    Session session = getSession();
+    EntityManager session = getEntityManager();
     try {
+      session.getTransaction().begin();
+
       session.remove(findById(id));
+      session.getTransaction().commit();
+
     } catch (Throwable e) {
+      session.getTransaction().rollback();
+
       throw new DataBaseException("Can't delete id:" + id, e);
     }
   }
@@ -201,7 +231,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
    * Finds all records, both active and not
    */
   public List<T> findAllUnfiltered() {
-    Session session = getSession();
+    EntityManager session = getEntityManager();
 
     ((Session) session.getDelegate()).disableFilter(BaseEntity.IS_ACTIVE_FILTER_NAME);
     Query q = session.createQuery("Select t from " + type.getSimpleName() + " t");

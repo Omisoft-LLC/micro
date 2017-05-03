@@ -1,11 +1,12 @@
 package com.omisoft.server.common.filters;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.SessionFactory;
 import org.hibernate.StaleObjectStateException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.*;
 import java.io.IOException;
 
@@ -14,23 +15,24 @@ import java.io.IOException;
 public class PersistFilter implements Filter {
 
   @Inject
-  private SessionFactory sf;
+  private EntityManagerFactory emf;
 
   public void doFilter(ServletRequest request,
                        ServletResponse response,
                        FilterChain chain)
       throws IOException, ServletException {
-
+    EntityManager em = null;
     try {
       log.debug("Starting a database transaction");
-      sf.getCurrentSession().beginTransaction();
+      em = emf.createEntityManager();
+      em.getTransaction().begin();
 
       // Call the next filter (continue request processing)
       chain.doFilter(request, response);
 
       // Commit and cleanup
       log.debug("Committing the database transaction");
-      sf.getCurrentSession().getTransaction().commit();
+      em.getTransaction().commit();
 
     } catch (StaleObjectStateException staleEx) {
       log.error("This interceptor does not implement optimistic concurrency control!");
@@ -44,9 +46,9 @@ public class PersistFilter implements Filter {
       // Rollback only
       ex.printStackTrace();
       try {
-        if (sf.getCurrentSession().getTransaction().isActive()) {
+        if (em.getTransaction().isActive()) {
           log.debug("Trying to rollback database transaction after exception");
-          sf.getCurrentSession().getTransaction().rollback();
+          em.getTransaction().rollback();
         }
       } catch (Throwable rbEx) {
         log.error("Could not rollback transaction after exception!", rbEx);
@@ -60,7 +62,7 @@ public class PersistFilter implements Filter {
   public void init(FilterConfig filterConfig) throws ServletException {
     log.debug("Initializing filter...");
     log.debug("Obtaining SessionFactory from static HibernateUtil singleton");
-//        sf = HibernateUtil.getSessionFactory();
+//        emf = HibernateUtil.getSessionFactory();
   }
 
   public void destroy() {
