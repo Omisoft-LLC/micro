@@ -5,7 +5,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.omisoft.server.common.auth.AuthUtils;
 import com.omisoft.server.common.auth.LoggedUserInfo;
 import com.omisoft.server.common.auth.UserAuthority;
-import com.omisoft.server.common.constants.CommonConstants;
 import com.omisoft.server.common.exceptions.SecurityException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -81,7 +80,7 @@ public class AuthorityFilter implements Filter {
           httpResponse.setStatus(401);
         } else {
           LoggedUserInfo redisDTO = authority.getUser(authHeader);
-          request.setAttribute(CommonConstants.LOGGED_USER, redisDTO);
+//          request.setAttribute(CommonConstants.LOGGED_USER, redisDTO);
           filterChain.doFilter(request, response);
         }
       }
