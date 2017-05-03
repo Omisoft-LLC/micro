@@ -13,13 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoggedUserInfo {
-  private final String email;
-  private final String userId;
+  private String email;
+  private String userId;
 
   public LoggedUserInfo(String email, String userId) {
     this.email = email;
     this.userId = userId;
   }
 
-
+  public LoggedUserInfo() {
+  }
 }
