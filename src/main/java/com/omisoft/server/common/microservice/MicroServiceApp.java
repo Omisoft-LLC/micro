@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.servlet.GuiceFilter;
+import com.omisoft.server.common.di.InjectorHolder;
 import com.omisoft.server.common.interfaces.WebSocket;
 import com.omisoft.server.common.metrics.MetricsService;
 import com.omisoft.server.common.utils.InetUtils;
@@ -63,7 +64,7 @@ public class MicroServiceApp {
   }
 
 
-  public MicroServiceApp addWebSockets(String webSocketPath, List<WebSocket> sockets) {
+  public MicroServiceApp addWebSockets(String webSocketPath, Class<? extends WebSocket>... sockets) {
     // Config WS
     ServletContextHandler wsContextHandler = new ServletContextHandler();
     wsContextHandler.setContextPath(webSocketPath);
@@ -71,8 +72,8 @@ public class MicroServiceApp {
     try {
       ServerContainer wscontainer = WebSocketServerContainerInitializer.configureContext(wsContextHandler);
       // Add WebSocket endpoint to javax.websocket layer
-      for (WebSocket ws : sockets)
-        wscontainer.addEndpoint(ws.getClass());
+      for (Class<? extends WebSocket> ws : sockets)
+        wscontainer.addEndpoint(ws);
     } catch (DeploymentException | ServletException e) {
       e.printStackTrace();
     }
@@ -257,6 +258,7 @@ public class MicroServiceApp {
 
     Injector injector = Guice.createInjector(modules);
     INJECTOR = injector;
+    InjectorHolder.setInjector(injector);
     final ServletContextHandler context = new ServletContextHandler(server,
         "/", ServletContextHandler.SESSIONS);
 
