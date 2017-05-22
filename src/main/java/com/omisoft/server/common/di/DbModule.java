@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.Properties;
 
 /**
  * Created by dido on 16.03.17.
@@ -15,14 +16,17 @@ import javax.persistence.Persistence;
 @Slf4j
 public class DbModule extends AbstractModule {
   private final String persistenceUnitName;
+  private final Properties props;
 
 
   public DbModule() {
     persistenceUnitName = null;
+    props = null;
   }
 
-  public DbModule(String persistenceUnitName) {
+  public DbModule(String persistenceUnitName, Properties props) {
     this.persistenceUnitName = persistenceUnitName;
+    this.props = props;
   }
 
   @Override
@@ -33,9 +37,13 @@ public class DbModule extends AbstractModule {
   @Provides
   @Singleton
   public EntityManagerFactory provideEntityManagerFactory() {
-    log.info("BEFORE PU CREATE");
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-    log.info("AA CREATING EMF:" + persistenceUnitName);
+    EntityManagerFactory emf;
+    if (props == null) {
+      emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    } else {
+      emf = Persistence.createEntityManagerFactory(persistenceUnitName, props);
+
+    }
     //    StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
 //        .configure("hibernate.cfg.xml")
 //        .build();
