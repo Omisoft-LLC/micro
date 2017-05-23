@@ -67,7 +67,6 @@ dependencies {
     compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: '4.1.0'
     compile group: 'com.google.inject.extensions', name: 'guice-multibindings', version: '4.1.0'
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
-    compile 'org.postgresql:postgresql:42.0.0'
     compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '4.34.2'
     compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.2.10.Final'
 
