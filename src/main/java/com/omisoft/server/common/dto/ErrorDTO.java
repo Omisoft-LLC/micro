@@ -1,7 +1,9 @@
 package com.omisoft.server.common.dto;
 
 import com.omisoft.server.common.enums.Severity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +12,9 @@ import java.util.Map;
  * ErrorDTO, transfers error messages to clients
  * Created by leozhekov on 11/1/16.
  */
-@Data
+@Getter
+@Setter
+@ToString
 public class ErrorDTO {
   private String detailedMessage;
 
@@ -22,6 +26,9 @@ public class ErrorDTO {
 
   private Map<String, String> validationMessages = new HashMap<>();
 
+  public ErrorDTO() {
+
+  }
 
   /**
    * Constructs new ErrorDto.
@@ -49,8 +56,8 @@ public class ErrorDTO {
   /**
    * Constructs new error dto and set severity.
    *
-   * @param detailedMessage  error title
-   * @param severity severity
+   * @param detailedMessage error title
+   * @param severity        severity
    */
   public ErrorDTO(String err, String detailedMessage, Severity severity) {
     this.err = err;
@@ -64,4 +71,30 @@ public class ErrorDTO {
     this.severity = severity;
     this.errorCode = errorCode;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ErrorDTO errorDTO = (ErrorDTO) o;
+
+    if (errorCode != errorDTO.errorCode) return false;
+    if (detailedMessage != null ? !detailedMessage.equals(errorDTO.detailedMessage) : errorDTO.detailedMessage != null)
+      return false;
+    if (severity != errorDTO.severity) return false;
+    if (err != null ? !err.equals(errorDTO.err) : errorDTO.err != null) return false;
+    return validationMessages != null ? validationMessages.equals(errorDTO.validationMessages) : errorDTO.validationMessages == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = detailedMessage != null ? detailedMessage.hashCode() : 0;
+    result = 31 * result + (severity != null ? severity.hashCode() : 0);
+    result = 31 * result + errorCode;
+    result = 31 * result + (err != null ? err.hashCode() : 0);
+    result = 31 * result + (validationMessages != null ? validationMessages.hashCode() : 0);
+    return result;
+  }
+
 }
