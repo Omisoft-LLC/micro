@@ -1,14 +1,18 @@
 package com.omisoft.server.common.filters;
 
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.StaleObjectStateException;
-
+import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.servlet.*;
-import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.StaleObjectStateException;
 
 @Slf4j
 @Singleton
@@ -18,8 +22,8 @@ public class PersistFilter implements Filter {
   private EntityManagerFactory emf;
 
   public void doFilter(ServletRequest request,
-                       ServletResponse response,
-                       FilterChain chain)
+      ServletResponse response,
+      FilterChain chain)
       throws IOException, ServletException {
     EntityManager em = null;
     try {

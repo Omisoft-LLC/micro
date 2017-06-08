@@ -4,13 +4,13 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.omisoft.server.common.structures.SecureString;
-
 import java.io.IOException;
 
 /**
  * Created by dido on 12/7/16.
  */
 public class SecureStringDeserializer extends StdDeserializer<SecureString> {
+
   protected SecureStringDeserializer(Class<?> vc) {
     super(vc);
   }

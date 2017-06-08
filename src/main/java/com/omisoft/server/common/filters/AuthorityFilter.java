@@ -1,25 +1,29 @@
 package com.omisoft.server.common.filters;
 
+import static com.omisoft.server.common.constants.CommonConstants.AUTHORIZATION_HEADER;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.omisoft.server.common.auth.AuthUtils;
 import com.omisoft.server.common.auth.LoggedUserInfo;
 import com.omisoft.server.common.auth.UserAuthority;
 import com.omisoft.server.common.exceptions.SecurityException;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-
+import java.io.IOException;
+import java.text.ParseException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-
-import static com.omisoft.server.common.constants.CommonConstants.AUTHORIZATION_HEADER;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 
 /**

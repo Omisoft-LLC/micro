@@ -3,18 +3,18 @@ package com.omisoft.server.common.di;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import lombok.extern.slf4j.Slf4j;
-
+import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by dido on 16.03.17.
  */
 @Slf4j
 public class DbModule extends AbstractModule {
+
   private final String persistenceUnitName;
   private final Properties props;
 

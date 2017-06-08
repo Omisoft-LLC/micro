@@ -1,17 +1,19 @@
 package com.omisoft.server.common.auth;
 
 
-import com.nimbusds.jose.*;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.omisoft.server.common.exceptions.SecurityException;
-import org.joda.time.DateTime;
-
 import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;
+import org.joda.time.DateTime;
 
 
 /**
@@ -45,7 +47,6 @@ public final class AuthUtils {
         .notBeforeTime(new Date())
         .issueTime(new Date()).jwtID(UUID.randomUUID().toString())
         .build();
-
 
     JWSSigner signer = null;
     try {

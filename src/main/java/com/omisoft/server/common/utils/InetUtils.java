@@ -1,14 +1,13 @@
 package com.omisoft.server.common.utils;
 
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
 import java.util.Enumeration;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Various Inet utility methods
@@ -16,6 +15,7 @@ import java.util.Enumeration;
  */
 @Slf4j
 public class InetUtils {
+
   public static Integer getPort() {
 
     String port = System.getProperty("jetty.port");
@@ -72,11 +72,6 @@ public class InetUtils {
 
   /**
    * Checks availability of tcp service and blocks if not available
-   *
-   * @param hostname
-   * @param port
-   * @return
-   * @throws InterruptedException
    */
   public static boolean checkAvailabilityAndBlock(String hostname, int port)
       throws InterruptedException {

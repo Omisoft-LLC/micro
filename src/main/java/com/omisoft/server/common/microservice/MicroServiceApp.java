@@ -8,13 +8,35 @@ import com.omisoft.server.common.di.InjectorHolder;
 import com.omisoft.server.common.interfaces.WebSocket;
 import com.omisoft.server.common.metrics.MetricsService;
 import com.omisoft.server.common.utils.InetUtils;
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.websocket.DeploymentException;
+import javax.websocket.server.ServerContainer;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.annotations.AnnotationConfiguration;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.jmx.MBeanContainer;
-import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
-import org.eclipse.jetty.servlet.*;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.resource.ResourceCollection;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
@@ -24,25 +46,13 @@ import org.eclipse.jetty.websocket.jsr356.server.deploy.WebSocketServerContainer
 import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextListener;
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.websocket.DeploymentException;
-import javax.websocket.server.ServerContainer;
-import java.io.File;
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-
 
 /**
  * Abstract class to init microservices Created by dido on 16.06.16.
  */
 @Slf4j
 public class MicroServiceApp {
+
   private String serviceName;
   private Server server;
   private boolean test;
@@ -64,16 +74,19 @@ public class MicroServiceApp {
   }
 
 
-  public MicroServiceApp addWebSockets(String webSocketPath, Class<? extends WebSocket>... sockets) {
+  public MicroServiceApp addWebSockets(String webSocketPath,
+      Class<? extends WebSocket>... sockets) {
     // Config WS
     ServletContextHandler wsContextHandler = new ServletContextHandler();
     wsContextHandler.setContextPath(webSocketPath);
     wsContextHandler.setServer(server);
     try {
-      ServerContainer wscontainer = WebSocketServerContainerInitializer.configureContext(wsContextHandler);
+      ServerContainer wscontainer = WebSocketServerContainerInitializer
+          .configureContext(wsContextHandler);
       // Add WebSocket endpoint to javax.websocket layer
-      for (Class<? extends WebSocket> ws : sockets)
+      for (Class<? extends WebSocket> ws : sockets) {
         wscontainer.addEndpoint(ws);
+      }
     } catch (DeploymentException | ServletException e) {
       e.printStackTrace();
     }
@@ -99,7 +112,9 @@ public class MicroServiceApp {
       contexts.setHandlers(handlers.toArray(handlerArray));
       server.setHandler(contexts);
       isAlive = true;
-      log.info("SUCCESS STARTING MICROSERVICE:" + name + " FOR " + (System.currentTimeMillis() - begin) + " ms.");
+      log.info(
+          "SUCCESS STARTING MICROSERVICE:" + name + " FOR " + (System.currentTimeMillis() - begin)
+              + " ms.");
 
       log.info("STARTING SERVER");
 
@@ -167,15 +182,23 @@ public class MicroServiceApp {
     SslContextFactory sslContextFactory = new SslContextFactory(keystorePath);
     sslContextFactory.setUseCipherSuitesOrder(true);
 
-    sslContextFactory.setIncludeCipherSuites("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+    sslContextFactory.setIncludeCipherSuites("TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
         "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
         "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256", "TLS_DHE_DSS_WITH_AES_128_GCM_SHA256",
-        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384", "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
-        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA", "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
-        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256", "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256",
-        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA", "TLS_DHE_RSA_WITH_AES_256_CBC_SHA", "TLS_RSA_WITH_AES_128_CBC_SHA", "SSL_RSA_WITH_3DES_EDE_CBC_SHA", "SSL_RSA_WITH_3DES_EDE_CBC_SHA");
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
+        "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
+        "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA", "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
+        "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA", "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
+        "TLS_DHE_RSA_WITH_AES_128_CBC_SHA", "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256",
+        "TLS_DHE_RSA_WITH_AES_256_CBC_SHA256",
+        "TLS_DHE_DSS_WITH_AES_256_CBC_SHA", "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
+        "TLS_RSA_WITH_AES_128_CBC_SHA", "SSL_RSA_WITH_3DES_EDE_CBC_SHA",
+        "SSL_RSA_WITH_3DES_EDE_CBC_SHA");
     sslContextFactory.setExcludeCipherSuites("SSL_RSA_WITH_DES_CBC_SHA",
         "SSL_DHE_RSA_WITH_DES_CBC_SHA", "SSL_DHE_DSS_WITH_DES_CBC_SHA",
         "SSL_RSA_EXPORT_WITH_RC4_40_MD5", "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
@@ -214,7 +237,6 @@ public class MicroServiceApp {
 //    NegotiatingServerConnectionFactory.checkProtocolNegotiationAvailable();
 //    ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory();
 //    alpn.setDefaultProtocol(HttpVersion.HTTP_1_1.asString()); // sets default protocol to HTTP 1.1
-
 
     // SSL Connector
     log.error("ADDED SSL CONFIG");
@@ -265,7 +287,8 @@ public class MicroServiceApp {
     // Add the GuiceFilter
     context.addFilter(GuiceFilter.class, "/*",
         EnumSet.allOf(DispatcherType.class));
-    context.addEventListener(injector.getInstance((GuiceResteasyBootstrapServletContextListener.class)));
+    context.addEventListener(
+        injector.getInstance((GuiceResteasyBootstrapServletContextListener.class)));
 
     context.addServlet(DefaultServlet.class, "/");
     handlers.add(context);
@@ -282,14 +305,12 @@ public class MicroServiceApp {
     classlist.addBefore(JettyWebXmlConfiguration.class.getName(),
         AnnotationConfiguration.class.getName());
 
-
     String webDir = MicroServiceApp.class.getClassLoader().getResource("webapp").toExternalForm();
 
     WebAppContext webAppContext = new WebAppContext();
     webAppContext.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false");
     webAppContext.setContextPath("/");
     webAppContext.getSessionHandler().setHttpOnly(true);
-
 
     webAppContext.setBaseResource(new ResourceCollection(new String[]{webDir}));
     webAppContext.setDescriptor(webDir + "/WEB-INF/web.xml");
@@ -312,11 +333,9 @@ public class MicroServiceApp {
     this.server = server;
     INSTANCE = this;
 
-
     // Set Form Limits
     server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize", 10000);
     server.setAttribute("org.eclipse.jetty.server.Request.maxFormKeys", 200);
-
 
     MetricsService.initMetrics(Thread.currentThread().getStackTrace()[1].getClassName());
 
@@ -334,8 +353,6 @@ public class MicroServiceApp {
 
   /**
    * Wait for services that are dependencies of the current service
-   *
-   * @param dependencies
    */
   private void waitForServices(DependenciesEnum[] dependencies) {
     if (dependencies != null) {
@@ -368,8 +385,10 @@ public class MicroServiceApp {
    * Generic catch all error handler
    */
   public static class ErrorHandler extends ErrorPageErrorHandler {
+
     @Override
-    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void handle(String target, Request baseRequest, HttpServletRequest request,
+        HttpServletResponse response) throws IOException {
       response.getWriter()
           .append("{\"status\":\"GENERIC ERROR\",\"detailedMessage\":\"HTTP ")
           .append(String.valueOf(response.getStatus()))

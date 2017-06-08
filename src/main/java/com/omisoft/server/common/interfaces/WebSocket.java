@@ -5,4 +5,5 @@ package com.omisoft.server.common.interfaces;
  * Created by dido on 03.04.17.
  */
 public interface WebSocket {
+
 }

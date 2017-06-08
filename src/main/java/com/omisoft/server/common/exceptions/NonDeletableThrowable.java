@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 
 public class NonDeletableThrowable extends Exception {
+
   private Throwable originalException;
   private String message;
 

@@ -6,7 +6,8 @@ package com.omisoft.server.common.microservice;
  */
 public enum DependenciesEnum {
   DB("omibox-db", 5432), RABBITMQ("omibox-rabbitmq", 5672), REDIS("omibox-redis", 6379), REGISTRY(
-      "omibox-registry", 8081), OMIBOX_WS("omibox-ws", 10080), OMIBOX_GATEWAY("omibox-gateway", 8080), OMIBOX_VIDEOPIPELINE("omibox-videopipeline", 8080);
+      "omibox-registry", 8081), OMIBOX_WS("omibox-ws", 10080), OMIBOX_GATEWAY("omibox-gateway",
+      8080), OMIBOX_VIDEOPIPELINE("omibox-videopipeline", 8080);
   String host;
   int port;
 

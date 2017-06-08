@@ -16,10 +16,9 @@
 
 package com.omisoft.server.common.filters;
 
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.zip.GZIPOutputStream;
 import javax.inject.Singleton;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -27,15 +26,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.zip.GZIPOutputStream;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provides GZIP compression of responses.
  * <p/>
- * See the filter-mappings.xml entry for the gzip filter for the URL patterns which will be gzipped. At present this
- * includes .jsp, .js and .css.
+ * See the filter-mappings.xml entry for the gzip filter for the URL patterns which will be gzipped.
+ * At present this includes .jsp, .js and .css.
  * <p/>
  *
  * @author <a href="mailto:gluck@thoughtworks.com">Greg Luck</a>
@@ -55,8 +54,6 @@ public class GZipServletFilter extends HttpFilter {
 
   /**
    * Performs initialisation.
-   *
-   * @param filterConfig
    */
   protected void doInit(FilterConfig filterConfig) throws Exception {
     String varyParam = filterConfig.getInitParameter(VARY_HEADER_PARAM);
@@ -71,7 +68,8 @@ public class GZipServletFilter extends HttpFilter {
   }
 
   /**
-   * A template method that performs any Filter specific destruction tasks. Called from {@link #destroy()}
+   * A template method that performs any Filter specific destruction tasks. Called from {@link
+   * #destroy()}
    */
   protected void doDestroy() {
     // noop
@@ -80,7 +78,8 @@ public class GZipServletFilter extends HttpFilter {
   /**
    * Performs the filtering for a request.
    */
-  public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final HttpSession httpSession, final FilterChain chain) throws IOException, ServletException {
+  public void doFilter(final HttpServletRequest request, final HttpServletResponse response,
+      final HttpSession httpSession, final FilterChain chain) throws IOException, ServletException {
     if (!isIncluded(request) && acceptsGzipEncoding(request) && !response.isCommitted()) {
       // Client accepts zipped content
       if (LOG.isDebugEnabled()) {
@@ -94,7 +93,6 @@ public class GZipServletFilter extends HttpFilter {
       // Handle the request
       chain.doFilter(request, response);
       response.flushBuffer();
-
 
       gzout.close();
 
@@ -113,10 +111,10 @@ public class GZipServletFilter extends HttpFilter {
         default:
       }
 
-
       // Saneness checks
       byte[] compressedBytes = compressed.toByteArray();
-      boolean shouldGzippedBodyBeZero = ResponseUtil.shouldGzippedBodyBeZero(compressedBytes, request);
+      boolean shouldGzippedBodyBeZero = ResponseUtil
+          .shouldGzippedBodyBeZero(compressedBytes, request);
       boolean shouldBodyBeZero = ResponseUtil.shouldBodyBeZero(request, response.getStatus());
       if (shouldGzippedBodyBeZero || shouldBodyBeZero) {
         // No reason to add GZIP headers or write body if no content was written or status code specifies no
@@ -128,7 +126,6 @@ public class GZipServletFilter extends HttpFilter {
       // Write the zipped body
       ResponseUtil.addGzipHeader(response);
 
-
       response.setContentLength(compressedBytes.length);
 
       response.getOutputStream().write(compressedBytes);
@@ -136,7 +133,8 @@ public class GZipServletFilter extends HttpFilter {
     } else {
       // Client does not accept zipped content - don't bother zipping
       if (LOG.isDebugEnabled()) {
-        LOG.debug(request.getRequestURL() + ". Writing without gzip compression because the request does not accept gzip.");
+        LOG.debug(request.getRequestURL()
+            + ". Writing without gzip compression because the request does not accept gzip.");
       }
       chain.doFilter(request, response);
     }
@@ -150,29 +148,25 @@ public class GZipServletFilter extends HttpFilter {
     final boolean includeRequest = !(uri == null);
 
     if (includeRequest && LOG.isDebugEnabled()) {
-      LOG.debug(request.getRequestURL() + " resulted in an include request. This is unusable, because"
-          + "the response will be assembled into the overrall response. Not gzipping.");
+      LOG.debug(
+          request.getRequestURL() + " resulted in an include request. This is unusable, because"
+              + "the response will be assembled into the overrall response. Not gzipping.");
     }
     return includeRequest;
   }
 
   /**
-   * Determine whether the user agent accepts GZIP encoding. This feature is part of HTTP1.1. If a browser accepts
-   * GZIP encoding it will advertise this by including in its HTTP header:
+   * Determine whether the user agent accepts GZIP encoding. This feature is part of HTTP1.1. If a
+   * browser accepts GZIP encoding it will advertise this by including in its HTTP header:
    * <p/>
-   * <code>
-   * Accept-Encoding: gzip
-   * </code>
+   * <code> Accept-Encoding: gzip </code>
    * <p/>
-   * Requests which do not accept GZIP encoding fall into the following categories:
-   * <ul>
-   * <li>Old browsers, notably IE 5 on Macintosh.
-   * <li>Internet Explorer through a proxy. By default HTTP1.1 is enabled but disabled when going through a proxy. 90%
-   * of non gzip requests seen on the Internet are caused by this.
-   * </ul>
-   * As of September 2004, about 34% of Internet requests do not accept GZIP encoding.
+   * Requests which do not accept GZIP encoding fall into the following categories: <ul> <li>Old
+   * browsers, notably IE 5 on Macintosh. <li>Internet Explorer through a proxy. By default HTTP1.1
+   * is enabled but disabled when going through a proxy. 90% of non gzip requests seen on the
+   * Internet are caused by this. </ul> As of September 2004, about 34% of Internet requests do not
+   * accept GZIP encoding.
    *
-   * @param request
    * @return true, if the User Agent request accepts GZIP encoding
    */
   protected boolean acceptsGzipEncoding(HttpServletRequest request) {
@@ -211,10 +205,11 @@ final class ResponseUtil {
    * When the compressedBytes is {@link #EMPTY_GZIPPED_CONTENT_SIZE} it should be zero.
    *
    * @param compressedBytes the gzipped response body
-   * @param request         the client HTTP request
+   * @param request the client HTTP request
    * @return true if the response should be 0, even if it is isn't.
    */
-  public static boolean shouldGzippedBodyBeZero(byte[] compressedBytes, HttpServletRequest request) {
+  public static boolean shouldGzippedBodyBeZero(byte[] compressedBytes,
+      HttpServletRequest request) {
 
     //Check for 0 length body
     if (compressedBytes.length == EMPTY_GZIPPED_CONTENT_SIZE) {
@@ -229,16 +224,15 @@ final class ResponseUtil {
 
 
   /**
-   * Performs a number of checks to ensure response saneness according to the rules of RFC2616:
-   * <ol>
-   * <li>If the response code is {@link javax.servlet.http.HttpServletResponse#SC_NO_CONTENT} then it is illegal for the body
-   * to contain anything. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5
-   * <li>If the response code is {@link javax.servlet.http.HttpServletResponse#SC_NOT_MODIFIED} then it is illegal for the body
-   * to contain anything. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5
+   * Performs a number of checks to ensure response saneness according to the rules of RFC2616: <ol>
+   * <li>If the response code is {@link javax.servlet.http.HttpServletResponse#SC_NO_CONTENT} then
+   * it is illegal for the body to contain anything. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5
+   * <li>If the response code is {@link javax.servlet.http.HttpServletResponse#SC_NOT_MODIFIED} then
+   * it is illegal for the body to contain anything. See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5
    * </ol>
    *
-   * @param request         the client HTTP request
-   * @param responseStatus         the responseStatus
+   * @param request the client HTTP request
+   * @param responseStatus the responseStatus
    * @return true if the response should be 0, even if it is isn't.
    */
   public static boolean shouldBodyBeZero(HttpServletRequest request, int responseStatus) {
@@ -265,11 +259,13 @@ final class ResponseUtil {
   }
 
   /**
-   * Adds the gzip HTTP header to the response. This is need when a gzipped body is returned so that browsers can properly decompress it.
+   * Adds the gzip HTTP header to the response. This is need when a gzipped body is returned so that
+   * browsers can properly decompress it.
    * <p/>
-   * @param response the response which will have a header added to it. I.e this method changes its parameter
-   * from a {@link javax.servlet.RequestDispatcher#include(javax.servlet.ServletRequest, javax.servlet.ServletResponse)}
-   * method and the set set header is ignored.
+   *
+   * @param response the response which will have a header added to it. I.e this method changes its
+   * parameter from a {@link javax.servlet.RequestDispatcher#include(javax.servlet.ServletRequest,
+   * javax.servlet.ServletResponse)} method and the set set header is ignored.
    */
   public static void addGzipHeader(final HttpServletResponse response) {
     response.setHeader("Content-Encoding", "gzip");

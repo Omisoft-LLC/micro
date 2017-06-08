@@ -7,6 +7,7 @@ package com.omisoft.server.common.exceptions;
  * database connection or transaction.
  */
 public class DataBaseException extends Exception {
+
   public DataBaseException(String message) {
     super(message);
   }

@@ -4,16 +4,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Holds Logged users
  * Created by nslavov on 3/25/16.
  */
 public class UserAuthority {
+
   private static final int TIMEOUT = 7200;
   private static UserAuthority INSTANCE;
   private final ObjectMapper mapper;

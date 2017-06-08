@@ -1,7 +1,7 @@
 package com.omisoft.server.common.filters;
 
-import lombok.extern.slf4j.Slf4j;
-
+import java.io.IOException;
+import java.util.Enumeration;
 import javax.inject.Singleton;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -9,15 +9,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.Enumeration;
+import lombok.extern.slf4j.Slf4j;
 
 @Singleton
 @Slf4j
 public final class LoggingFilter extends HttpFilter {
+
   private FilterConfig filterConfig = null;
 
-  public void doFilter(HttpServletRequest request, HttpServletResponse response, HttpSession session, FilterChain chain)
+  public void doFilter(HttpServletRequest request, HttpServletResponse response,
+      HttpSession session, FilterChain chain)
       throws IOException, ServletException {
 
     long start = System.currentTimeMillis();

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.omisoft.server.common.serializers.SecureStringDeserializer;
 import com.omisoft.server.common.serializers.SecureStringSerializer;
-
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -18,6 +17,7 @@ import java.util.Arrays;
 @JsonDeserialize(using = SecureStringDeserializer.class)
 @JsonSerialize(using = SecureStringSerializer.class)
 public class SecureString implements CharSequence, Serializable {
+
   public static final SecureString EMPTY_STRING =
       new SecureString(new char[]{Character.MIN_VALUE});
   private final char[] chars;
@@ -30,8 +30,6 @@ public class SecureString implements CharSequence, Serializable {
 
   /**
    * This constructor is insecure
-   *
-   * @param string
    */
   public SecureString(String string) {
     this(string.toCharArray());
@@ -39,8 +37,6 @@ public class SecureString implements CharSequence, Serializable {
 
   /**
    * TODO Think of a secure way to do this
-   *
-   * @param bytes
    */
   public SecureString(byte[] bytes) {
 
@@ -84,8 +80,6 @@ public class SecureString implements CharSequence, Serializable {
 
   /**
    * Returns copy of char array (use only in secure objects)
-   *
-   * @return
    */
   public char[] toCharArray() {
     return Arrays.copyOf(this.chars, this.length());
@@ -106,8 +100,6 @@ public class SecureString implements CharSequence, Serializable {
 
   /**
    * Convert secure string to byte array. Secure string is utf-8
-   *
-   * @return
    */
   public byte[] toBytes() {
     CharBuffer charBuffer = CharBuffer.wrap(chars);
@@ -122,10 +114,12 @@ public class SecureString implements CharSequence, Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
 
     SecureString that = (SecureString) o;
 

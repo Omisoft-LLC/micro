@@ -1,7 +1,12 @@
 package com.omisoft.server.common.filters;
 
-import javax.servlet.*;
 import java.io.IOException;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
  * Standard UTF-8 filter
@@ -36,15 +41,15 @@ public class UTF8Filter implements Filter {
    * for this request.
    *
    * @param aChain The filter chain we are processing
-   * @throws IOException      if an input/output error occurs
+   * @throws IOException if an input/output error occurs
    * @throws ServletException if a servlet error occurs
    */
-  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain aChain)
+  public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
+      FilterChain aChain)
       throws IOException, ServletException {
 
     servletRequest.setCharacterEncoding(mEncoding);
     servletResponse.setCharacterEncoding(mEncoding);
-
 
     // Pass control on to the next filter
     aChain.doFilter(servletRequest, servletResponse);

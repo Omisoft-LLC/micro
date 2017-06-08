@@ -4,15 +4,15 @@ package com.omisoft.server.common.dao;
 import com.omisoft.server.common.entities.BaseEntity;
 import com.omisoft.server.common.exceptions.DataBaseException;
 import com.omisoft.server.common.exceptions.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
-
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 
 /**
  * Base DAO Impl Created by nslavov on 3/17/16.
@@ -42,7 +42,8 @@ public abstract class BaseDAO<T extends BaseEntity> {
       return found;
     } else {
       throw new NotFoundException(
-          "Could not find all com.omisoft.server.common.entities from type: " + type.getSimpleName() + "\n" + q.toString());
+          "Could not find all com.omisoft.server.common.entities from type: " + type.getSimpleName()
+              + "\n" + q.toString());
     }
   }
 
@@ -108,7 +109,6 @@ public abstract class BaseDAO<T extends BaseEntity> {
     }
 
 
-
   }
 
   /**
@@ -140,8 +140,6 @@ public abstract class BaseDAO<T extends BaseEntity> {
 
   /**
    * Base method to get entity manager Use this to enable com.omisoft.server.common.filters
-   *
-   * @return
    */
 
   public EntityManager getEntityManager() {
@@ -236,5 +234,15 @@ public abstract class BaseDAO<T extends BaseEntity> {
     ((Session) session.getDelegate()).disableFilter(BaseEntity.IS_ACTIVE_FILTER_NAME);
     Query q = session.createQuery("Select t from " + type.getSimpleName() + " t");
     return (List<T>) q.getResultList();
+  }
+
+  public Long getNexSequenceKey(String sequence) {
+
+    EntityManager entityManager = getEntityManager();
+    Query query = entityManager.createNativeQuery("SELECT nextval('public." + sequence + "');");
+    BigInteger queryResults = (BigInteger) query.getSingleResult();
+    Long k = queryResults.longValue();
+    return k;
+
   }
 }

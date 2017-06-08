@@ -1,12 +1,11 @@
 package com.omisoft.server.common.dto;
 
 import com.omisoft.server.common.enums.Severity;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * ErrorDTO, transfers error messages to clients
@@ -16,6 +15,7 @@ import java.util.Map;
 @Setter
 @ToString
 public class ErrorDTO {
+
   private String detailedMessage;
 
   private Severity severity;
@@ -57,7 +57,7 @@ public class ErrorDTO {
    * Constructs new error dto and set severity.
    *
    * @param detailedMessage error title
-   * @param severity        severity
+   * @param severity severity
    */
   public ErrorDTO(String err, String detailedMessage, Severity severity) {
     this.err = err;
@@ -74,17 +74,30 @@ public class ErrorDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     ErrorDTO errorDTO = (ErrorDTO) o;
 
-    if (errorCode != errorDTO.errorCode) return false;
-    if (detailedMessage != null ? !detailedMessage.equals(errorDTO.detailedMessage) : errorDTO.detailedMessage != null)
+    if (errorCode != errorDTO.errorCode) {
       return false;
-    if (severity != errorDTO.severity) return false;
-    if (err != null ? !err.equals(errorDTO.err) : errorDTO.err != null) return false;
-    return validationMessages != null ? validationMessages.equals(errorDTO.validationMessages) : errorDTO.validationMessages == null;
+    }
+    if (detailedMessage != null ? !detailedMessage.equals(errorDTO.detailedMessage)
+        : errorDTO.detailedMessage != null) {
+      return false;
+    }
+    if (severity != errorDTO.severity) {
+      return false;
+    }
+    if (err != null ? !err.equals(errorDTO.err) : errorDTO.err != null) {
+      return false;
+    }
+    return validationMessages != null ? validationMessages.equals(errorDTO.validationMessages)
+        : errorDTO.validationMessages == null;
   }
 
   @Override

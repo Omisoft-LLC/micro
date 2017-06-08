@@ -5,6 +5,7 @@ package com.omisoft.server.common.exceptions;
  * no value, null value or empty result list.
  */
 public class NotFoundException extends Exception {
+
   public NotFoundException(String message) {
     super(message);
   }

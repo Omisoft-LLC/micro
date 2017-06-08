@@ -13,19 +13,25 @@ import lombok.ToString;
 @Setter
 @ToString
 public class SuccessDTO {
+
   private String message;
 
   public SuccessDTO() {
 
   }
+
   public SuccessDTO(String msg) {
     this.message = msg;
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     SuccessDTO that = (SuccessDTO) o;
 

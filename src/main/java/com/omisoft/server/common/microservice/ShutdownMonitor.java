@@ -1,13 +1,12 @@
 package com.omisoft.server.common.microservice;
 
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.jetty.server.Server;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jetty.server.Server;
 
 /**
  * Stop thread for jetty Created by dido on 10.01.17.
@@ -35,7 +34,8 @@ public class ShutdownMonitor extends Thread {
     Socket accept;
     try {
       accept = socket.accept();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(accept.getInputStream(), "UTF-8"));
+      BufferedReader reader = new BufferedReader(
+          new InputStreamReader(accept.getInputStream(), "UTF-8"));
       reader.readLine();
       System.out.println("*** stopping jetty embedded server");
       server.stop();

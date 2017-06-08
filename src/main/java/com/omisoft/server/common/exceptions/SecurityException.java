@@ -4,6 +4,7 @@ package com.omisoft.server.common.exceptions;
  * Keystore operation exception Ceated by dido on 17.12.16.
  */
 public class SecurityException extends Exception {
+
   public SecurityException(Exception e) {
     super(e);
   }

@@ -1,21 +1,27 @@
 package com.omisoft.server.common.filters;
 
-import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Generic http filter
  */
 @Slf4j
 public abstract class HttpFilter implements Filter {
+
   private FilterConfig filterConfig;
 
   public HttpFilter() {
@@ -28,7 +34,8 @@ public abstract class HttpFilter implements Filter {
   /**
    * Checks if request contains the header value.
    */
-  private boolean headerContains(final HttpServletRequest request, final String header, final String value) {
+  private boolean headerContains(final HttpServletRequest request, final String header,
+      final String value) {
 
     logRequestHeaders(request);
 
@@ -44,8 +51,6 @@ public abstract class HttpFilter implements Filter {
 
   /**
    * Logs the request headers, if debug is enabled.
-   *
-   * @param request
    */
   protected void logRequestHeaders(final HttpServletRequest request) {
     if (log.isDebugEnabled()) {
@@ -72,14 +77,16 @@ public abstract class HttpFilter implements Filter {
   public void init() throws ServletException {
   }
 
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
+  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+      throws ServletException, IOException {
     HttpServletRequest httpRequest = (HttpServletRequest) request;
     HttpServletResponse httpResponse = (HttpServletResponse) response;
     HttpSession session = httpRequest.getSession(false);
     this.doFilter(httpRequest, httpResponse, session, chain);
   }
 
-  public abstract void doFilter(HttpServletRequest request, HttpServletResponse response, HttpSession session, FilterChain chain) throws ServletException, IOException;
+  public abstract void doFilter(HttpServletRequest request, HttpServletResponse response,
+      HttpSession session, FilterChain chain) throws ServletException, IOException;
 
   public void destroy() {
     this.filterConfig = null;
@@ -102,7 +109,8 @@ public abstract class HttpFilter implements Filter {
 
   private void checkFilterConfig() {
     if (this.filterConfig == null) {
-      throw new IllegalStateException("FilterConfig is not available. It seems that you\'ve overriden HttpFilter#init(FilterConfig). You should be overriding HttpFilter#init() instead, otherwise you have to call super.init(config).");
+      throw new IllegalStateException(
+          "FilterConfig is not available. It seems that you\'ve overriden HttpFilter#init(FilterConfig). You should be overriding HttpFilter#init() instead, otherwise you have to call super.init(config).");
     }
   }
 }

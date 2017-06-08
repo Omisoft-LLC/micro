@@ -9,6 +9,7 @@ import com.omisoft.server.common.auth.UserAuthority;
  * Created by dido on 03.05.17.
  */
 public class CommonModule extends AbstractModule {
+
   @Singleton
   @Provides
   public UserAuthority providesUserAuthority() {

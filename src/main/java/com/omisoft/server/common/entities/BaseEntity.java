@@ -1,15 +1,27 @@
 package com.omisoft.server.common.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.*;
+import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
-
-import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Version;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 
 
 /**
@@ -22,6 +34,7 @@ import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAM
     parameters = @ParamDef(name = "isActive", type = "boolean"))
 @Filters({@Filter(name = IS_ACTIVE_FILTER_NAME, condition = "is_active=:isActive")})
 public abstract class BaseEntity implements Serializable {
+
   public static final String IS_ACTIVE_FILTER_NAME = "isActiveFilter";
 
   @GeneratedValue(generator = "uuid2")
@@ -73,8 +86,9 @@ public abstract class BaseEntity implements Serializable {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
+    }
     if (o == null || !(o instanceof BaseEntity)) {
 
       return false;
@@ -83,8 +97,9 @@ public abstract class BaseEntity implements Serializable {
     BaseEntity other = (BaseEntity) o;
 
     // if the id is missing, return false
-    if (id == null)
+    if (id == null) {
       return false;
+    }
 
     // equivalence by id
     return id.equals(other.getId());
