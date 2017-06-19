@@ -3,6 +3,7 @@ package com.omisoft.server.common.entities;
 import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.omisoft.server.common.di.InjectorHolder;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -40,10 +41,10 @@ import org.hibernate.annotations.UpdateTimestamp;
     parameters = @ParamDef(name = "isActive", type = "boolean"))
 @Filters({@Filter(name = IS_ACTIVE_FILTER_NAME, condition = "is_active=:isActive")})
 public abstract class BaseEntity implements Serializable {
-  @Inject
   @Transient
   @JsonIgnore
-  private EntityManager entityManager;
+  @Inject
+  private transient EntityManager entityManager;
   public static final String IS_ACTIVE_FILTER_NAME = "isActiveFilter";
 
   @GeneratedValue(generator = "uuid2")
@@ -79,6 +80,8 @@ public abstract class BaseEntity implements Serializable {
    * @return
    */
   public EntityManager getEntityManager() {
+    InjectorHolder.getInjector().injectMembers(this);
+
     return this.entityManager;
 
   }

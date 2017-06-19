@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DbModule extends AbstractModule {
+  public static  EntityManagerFactory emf;
 
   private final String persistenceUnitName;
   private final Properties props;
@@ -27,6 +28,7 @@ public class DbModule extends AbstractModule {
   public DbModule(String persistenceUnitName, Properties props) {
     this.persistenceUnitName = persistenceUnitName;
     this.props = props;
+//    requestStaticInjection(BaseEntity.class);
   }
 
   @Override
@@ -62,6 +64,7 @@ public class DbModule extends AbstractModule {
 //        .build();
 //    SessionFactory sessionFactory = metadata.getSessionFactoryBuilder()
 //        .build();
+    DbModule.emf = emf;
     return emf;
   }
 
