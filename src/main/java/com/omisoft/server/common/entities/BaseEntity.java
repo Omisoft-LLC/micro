@@ -2,6 +2,7 @@ package com.omisoft.server.common.entities;
 
 import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -15,6 +16,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Query;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +41,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Filters({@Filter(name = IS_ACTIVE_FILTER_NAME, condition = "is_active=:isActive")})
 public abstract class BaseEntity implements Serializable {
   @Inject
+  @Transient
+  @JsonIgnore
   private EntityManager entityManager;
   public static final String IS_ACTIVE_FILTER_NAME = "isActiveFilter";
 
