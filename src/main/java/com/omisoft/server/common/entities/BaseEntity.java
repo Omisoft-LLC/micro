@@ -3,6 +3,7 @@ package com.omisoft.server.common.entities;
 import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Query;
 import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
@@ -113,6 +115,17 @@ public abstract class BaseEntity implements Serializable {
 
     // equivalence by id
     return id.equals(other.getId());
+  }
+
+
+  public Long getNexSequenceKey(String sequence) {
+
+    EntityManager entityManager = getEntityManager();
+    Query query = entityManager.createNativeQuery("SELECT nextval('public." + sequence + "');");
+    BigInteger queryResults = (BigInteger) query.getSingleResult();
+    Long k = queryResults.longValue();
+    return k;
+
   }
 
   @Override
