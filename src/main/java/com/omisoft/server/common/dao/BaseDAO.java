@@ -236,7 +236,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
     return (List<T>) q.getResultList();
   }
 
-  public Long getNexSequenceKey(String sequence) {
+  public Long getNextSequenceKey(String sequence) {
 
     EntityManager entityManager = getEntityManager();
     Query query = entityManager.createNativeQuery("SELECT nextval('public." + sequence + "');");
