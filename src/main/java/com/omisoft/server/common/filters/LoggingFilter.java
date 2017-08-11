@@ -23,16 +23,16 @@ public final class LoggingFilter extends HttpFilter {
 
     long start = System.currentTimeMillis();
     String address = request.getRemoteAddr();
-    String res = ((HttpServletRequest) request).getRequestURI();
+    String res = request.getRequestURI();
 
     chain.doFilter(request, response);
-    Enumeration<String> enumeration = ((HttpServletRequest) request).getHeaderNames();
+    Enumeration<String> enumeration = request.getHeaderNames();
     log.info(" User IP: " + address + " Resource: " + res + " Milliseconds used: "
         + (System.currentTimeMillis() - start));
     log.info("HEADERS:");
     while (enumeration.hasMoreElements()) {
       String header = enumeration.nextElement();
-      Enumeration<String> headerEnum = ((HttpServletRequest) request).getHeaders(header);
+      Enumeration<String> headerEnum = request.getHeaders(header);
       while (headerEnum.hasMoreElements()) {
         log.info(header + ":" + headerEnum.nextElement());
 

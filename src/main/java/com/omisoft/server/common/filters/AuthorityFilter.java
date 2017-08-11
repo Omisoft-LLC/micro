@@ -74,7 +74,7 @@ public class AuthorityFilter implements Filter {
       } else {
         JWTClaimsSet claimSet;
         try {
-          claimSet = (JWTClaimsSet) AuthUtils.decodeToken(authHeader);
+          claimSet = AuthUtils.decodeToken(authHeader);
         } catch (ParseException | JOSEException | SecurityException e) {
           httpResponse.setStatus(401);
           return;
@@ -83,8 +83,6 @@ public class AuthorityFilter implements Filter {
         if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
           httpResponse.setStatus(401);
         } else {
-          LoggedUserInfo redisDTO = authority.getUser(authHeader);
-//          request.setAttribute(CommonConstants.LOGGED_USER, redisDTO);
           filterChain.doFilter(request, response);
         }
       }

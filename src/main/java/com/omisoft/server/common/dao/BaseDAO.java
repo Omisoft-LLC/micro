@@ -58,7 +58,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
     EntityManager session = getEntityManager();
     session.getTransaction().begin();
 
-    T update = (T) session.merge(type);
+    T update = session.merge(type);
     session.getTransaction().commit();
 
     if (update != null) {
@@ -93,7 +93,12 @@ public abstract class BaseDAO<T extends BaseEntity> {
     }
   }
 
-
+  /**
+   * Saves an entity
+   * @param entity to save
+   * @return attached entity
+   * @throws DataBaseException error
+   */
   public T saveOrUpdate(T entity) throws DataBaseException {
     EntityManager session = getEntityManager();
     try {
@@ -148,7 +153,6 @@ public abstract class BaseDAO<T extends BaseEntity> {
   }
 
   @SuppressWarnings(value = "unchecked")
-
   public List<T> findInRange(int firstResult, int maxResults) throws NotFoundException {
     EntityManager session = getEntityManager();
     Query query = session.createQuery("Select t from " + type.getSimpleName() + " t");

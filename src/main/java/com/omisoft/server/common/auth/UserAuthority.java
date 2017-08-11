@@ -61,7 +61,7 @@ public class UserAuthority {
 
   public boolean belongs(String token, String userId) {
     LoggedUserInfo userInfo = getUser(token);
-    return userInfo != null ? userInfo.getUserId().equals(userId) : false;
+    return userInfo != null && userInfo.getUserId().equals(userId);
   }
 
 

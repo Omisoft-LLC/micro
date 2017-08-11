@@ -12,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @Provider
-public class GenericExceptionProvider implements ExceptionMapper<Exception> {
+public class GenericExceptionProvider implements ExceptionMapper<Throwable> {
 
   @Override
-  public Response toResponse(Exception e) {
+  public Response toResponse(Throwable e) {
     log.info("GENERIC ERROR");
     log.error("EXCEPTION:", e);
 
