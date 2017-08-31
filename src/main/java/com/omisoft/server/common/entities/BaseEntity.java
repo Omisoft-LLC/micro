@@ -68,15 +68,13 @@ public abstract class BaseEntity implements Serializable {
   @Column(name = "created_on")
   private Date createdOn;
 
-  @Version
-  @GeneratedValue
-  private Long version;
+
 
   @Column(name = "is_active", columnDefinition = "BOOLEAN default true")
   private Boolean isActive = Boolean.TRUE;
 
   /**
-   * Entity Manager
+   * Entity Manager.
    * @return
    */
   public EntityManager getEntityManager() {
@@ -90,7 +88,6 @@ public abstract class BaseEntity implements Serializable {
 
   public BaseEntity(String id) {
     this.id = UUID.fromString(id);
-    ;
   }
 
   @PrePersist

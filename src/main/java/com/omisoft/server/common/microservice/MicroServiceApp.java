@@ -128,6 +128,7 @@ public class MicroServiceApp {
     }
   }
 
+
   public MicroServiceApp addRest(final String path, Class aplicationResourceClass) {
     final ServletContextHandler context = new ServletContextHandler(
         server, "/");
@@ -327,8 +328,9 @@ public class MicroServiceApp {
 
     // Setup Threadpool
     QueuedThreadPool threadPool = new QueuedThreadPool();
-    threadPool.setMinThreads(8);
-    threadPool.setMaxThreads(1024);
+    threadPool.setMinThreads(100);
+    threadPool.setMaxThreads(500);
+    threadPool.setIdleTimeout(60000);
     Server server = new Server(threadPool);
     this.server = server;
     INSTANCE = this;

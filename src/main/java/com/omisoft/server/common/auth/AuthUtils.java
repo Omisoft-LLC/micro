@@ -29,6 +29,14 @@ public final class AuthUtils {
   // return decodeToken(authHeader).getSubject();
   // }
 
+  /**
+   * Decode token
+   * @param authHeader authorization header
+   * @return claim set
+   * @throws ParseException Parsing error
+   * @throws JOSEException sec problem
+   * @throws SecurityException General security exception
+   */
   public static JWTClaimsSet decodeToken(String authHeader)
       throws ParseException, JOSEException, SecurityException {
     SignedJWT signedJWT = SignedJWT.parse(authHeader);
@@ -39,6 +47,12 @@ public final class AuthUtils {
     }
   }
 
+  /**
+   * Creates token
+   * @param host host name
+   * @param sub subject
+   * @return token
+   */
   public static String createToken(String host, String sub) {
     JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
     JWTClaimsSet claim = builder.issuer(host)

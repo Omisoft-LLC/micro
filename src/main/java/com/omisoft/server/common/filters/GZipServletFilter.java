@@ -49,22 +49,16 @@ public class GZipServletFilter extends HttpFilter {
   private static final String VARY_HEADER_PARAM = "varyHeader";
   private static final String RETURN_ON_NOT_OK_PARAM = "returnOnNonOK";
 
-  private boolean setVaryHeader;
-  private boolean returnOnNonOk = true;
 
   /**
    * Performs initialisation.
    */
   protected void doInit(FilterConfig filterConfig) throws Exception {
     String varyParam = filterConfig.getInitParameter(VARY_HEADER_PARAM);
-    if (varyParam != null) {
-      setVaryHeader = Boolean.valueOf(varyParam);
-    }
+
 
     String returnOnNotOkParam = filterConfig.getInitParameter(RETURN_ON_NOT_OK_PARAM);
-    if (returnOnNotOkParam != null) {
-      returnOnNonOk = Boolean.valueOf(returnOnNotOkParam);
-    }
+
   }
 
   /**
