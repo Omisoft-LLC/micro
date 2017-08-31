@@ -64,6 +64,8 @@ public class AuthorityFilter implements Filter {
           break;
         }
       }
+    } else {
+      log.info("AUTHORIZATION_HEADER NOT FOUND !!");
     }
 
     if (method.equals("OPTIONS")) {
@@ -85,10 +87,10 @@ public class AuthorityFilter implements Filter {
         } else {
           LoggedUserInfo redisDTO = authority.getUser(authHeader);
 //          request.setAttribute(CommonConstants.LOGGED_USER, redisDTO);
-          filterChain.doFilter(request, response);
         }
       }
     }
+    filterChain.doFilter(request, response);
 
   }
 
