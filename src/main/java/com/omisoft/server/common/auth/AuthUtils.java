@@ -76,4 +76,25 @@ public final class AuthUtils {
 
   }
 
+  public static String createRegistryToken(String host,String email ,int expirationDay){
+    JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+    JWTClaimsSet claim = builder.issuer(host)
+        .subject(email)
+        .expirationTime((DateTime.now().plusDays(expirationDay).toDate()))
+        .notBeforeTime(new Date())
+        .issueTime(new Date()).jwtID(UUID.randomUUID().toString())
+        .build();
+
+    JWSSigner signer = null;
+    try {
+      signer = new MACSigner(TOKEN_SECRET);
+      SignedJWT jwt = new SignedJWT(JWT_HEADER, claim);
+      jwt.sign(signer);
+      return jwt.serialize();
+    } catch (JOSEException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
 }
