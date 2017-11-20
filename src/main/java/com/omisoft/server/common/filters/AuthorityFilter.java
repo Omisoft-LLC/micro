@@ -2,14 +2,10 @@ package com.omisoft.server.common.filters;
 
 import static com.omisoft.server.common.constants.CommonConstants.AUTHORIZATION_HEADER;
 
-import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.omisoft.server.common.auth.AuthUtils;
-import com.omisoft.server.common.auth.LoggedUserInfo;
 import com.omisoft.server.common.auth.UserAuthority;
-import com.omisoft.server.common.exceptions.SecurityException;
 import java.io.IOException;
-import java.text.ParseException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.Filter;
@@ -52,11 +48,15 @@ public class AuthorityFilter implements Filter {
     HttpServletRequest httpRequest = (HttpServletRequest) request;
     HttpServletResponse httpResponse = (HttpServletResponse) response;
     String authHeader = httpRequest.getHeader(AUTHORIZATION_HEADER);
-    log.info(authHeader);
+    log.info(httpRequest.getRequestURI());
     String method = httpRequest.getMethod();
     Cookie[] cokkies = httpRequest.getCookies();
     Cookie authCookie;
     if (StringUtils.isBlank(authHeader) || authHeader.equals("null")) {
+      if (cokkies == null || cokkies.length == 0) {
+        httpResponse.sendError(401);
+        return;
+      }
       for (Cookie c : cokkies) {
         if (AUTHORIZATION_HEADER.equalsIgnoreCase(c.getName())) {
           authCookie = c;
@@ -64,31 +64,37 @@ public class AuthorityFilter implements Filter {
           break;
         }
       }
-    } else {
-      log.info("AUTHORIZATION_HEADER NOT FOUND !!");
     }
+    try {
 
-    if (method.equals("OPTIONS")) {
-      httpResponse.setStatus(200);
-    } else {
-      if ((StringUtils.isBlank(authHeader) || !authority.isExist(authHeader))) {
-        httpResponse.setStatus(401);
-      } else {
-        JWTClaimsSet claimSet;
-        try {
-          claimSet = AuthUtils.decodeToken(authHeader);
-        } catch (ParseException | JOSEException | SecurityException e) {
-          httpResponse.setStatus(401);
-          return;
-        }
-        // ensure that the token is not expired
-        if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
-          httpResponse.setStatus(401);
-        } else {
-          filterChain.doFilter(request, response);
-        }
+      if (method.equals("OPTIONS")) {
+        httpResponse.setStatus(200);
+        filterChain.doFilter(request, response);
       }
+
+      if ((StringUtils.isBlank(authHeader) || !authority.isExist(authHeader))) {
+        httpResponse.sendError(401);
+        return;
+      }
+
+      JWTClaimsSet claimSet;
+      claimSet = AuthUtils.decodeToken(authHeader);
+
+      // ensure that the token is not expired
+
+      if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
+        httpResponse.sendError(401);
+        return;
+      }
+
+
+    } catch (Throwable e) {
+      e.printStackTrace();
+      log.info(e.getMessage());
+      httpResponse.sendError(401);
+      return;
     }
+    log.info(String.valueOf(httpResponse.getStatus()));
     filterChain.doFilter(request, response);
   }
 
