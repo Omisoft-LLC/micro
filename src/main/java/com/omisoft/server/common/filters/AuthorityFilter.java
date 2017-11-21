@@ -77,12 +77,11 @@ public class AuthorityFilter implements Filter {
         return;
       }
 
-      JWTClaimsSet claimSet;
-      claimSet = AuthUtils.decodeToken(authHeader);
-
+//      JWTClaimsSet claimSet;
+//      claimSet = AuthUtils.decodeToken(authHeader);
       // ensure that the token is not expired
 
-      if (new DateTime(claimSet.getExpirationTime()).isBefore(DateTime.now())) {
+      if (AuthUtils.expired(authHeader)) {
         httpResponse.sendError(401);
         return;
       }
