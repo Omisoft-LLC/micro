@@ -7,4 +7,5 @@ package com.omisoft.server.common.constants;
 public class CommonConstants {
 
   public static final String AUTHORIZATION_HEADER = "authorization";
+  public static final String API_KEY = "api_key";
 }
