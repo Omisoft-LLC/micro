@@ -102,7 +102,7 @@ public final class AuthUtils {
   public static boolean expired(String token) {
     try {
       JWTClaimsSet jwt = decodeToken(token);
-      return (new DateTime(jwt.getExpirationTime())).isBefore(DateTime.now());
+      return (new DateTime(jwt.getExpirationTime())).isAfter(DateTime.now());
     } catch (JOSEException | SecurityException | ParseException e) {
       e.printStackTrace();
     }
