@@ -31,6 +31,7 @@ public final class AuthUtils {
 
   /**
    * Decode token
+   *
    * @param authHeader authorization header
    * @return claim set
    * @throws ParseException Parsing error
@@ -49,6 +50,7 @@ public final class AuthUtils {
 
   /**
    * Creates token
+   *
    * @param host host name
    * @param sub subject
    * @return token
@@ -74,6 +76,37 @@ public final class AuthUtils {
     }
     return null;
 
+  }
+
+  public static String createRegistryToken(String host, String email, int expirationDay) {
+    JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+    JWTClaimsSet claim = builder.issuer(host)
+        .subject(email)
+        .expirationTime((DateTime.now().plusDays(expirationDay).toDate()))
+        .notBeforeTime(new Date())
+        .issueTime(new Date()).jwtID(UUID.randomUUID().toString())
+        .build();
+
+    JWSSigner signer = null;
+    try {
+      signer = new MACSigner(TOKEN_SECRET);
+      SignedJWT jwt = new SignedJWT(JWT_HEADER, claim);
+      jwt.sign(signer);
+      return jwt.serialize();
+    } catch (JOSEException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
+  public static boolean expired(String token) {
+    try {
+      JWTClaimsSet jwt = decodeToken(token);
+      return (new DateTime(jwt.getExpirationTime())).isBefore(DateTime.now());
+    } catch (JOSEException | SecurityException | ParseException e) {
+      e.printStackTrace();
+    }
+    return true;
   }
 
 }
