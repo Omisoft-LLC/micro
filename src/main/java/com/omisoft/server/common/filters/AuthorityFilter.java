@@ -57,9 +57,7 @@ public class AuthorityFilter implements Filter {
     Cookie authCookie;
     if (StringUtils.isBlank(authHeader) || authHeader.equals("null")) {
       if (cokkies == null || cokkies.length == 0) {
-//        httpResponse.sendError(401);
-        httpResponse.sendError(401,
-            mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
+        unauthorized(httpResponse);
         return;
       }
       for (Cookie c : cokkies) {
@@ -78,20 +76,13 @@ public class AuthorityFilter implements Filter {
       }
 
       if ((StringUtils.isBlank(authHeader) || !authority.isExist(authHeader))) {
-//        httpResponse.sendError(401);
-        httpResponse.sendError(401,
-            mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
+        unauthorized(httpResponse);
         return;
       }
 
-//      JWTClaimsSet claimSet;
-//      claimSet = AuthUtils.decodeToken(authHeader);
       // ensure that the token is not expired
-
       if (AuthUtils.expired(authHeader)) {
-//        httpResponse.sendError(401);
-        httpResponse.sendError(401,
-            mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
+        unauthorized(httpResponse);
         return;
       }
 
@@ -99,14 +90,26 @@ public class AuthorityFilter implements Filter {
     } catch (Throwable e) {
       e.printStackTrace();
       log.info(e.getMessage());
-//      httpResponse.sendError(401);
-      httpResponse.sendError(401,
-          mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
+      unauthorized(httpResponse);
       return;
     }
     log.info(String.valueOf(httpResponse.getStatus()));
     filterChain.doFilter(request, response);
   }
+
+  private void unauthorized(HttpServletResponse response) {
+    response.setStatus(401);
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
+    try {
+      response.getWriter().write(
+          mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
+    } catch (IOException e) {
+      e.printStackTrace();
+      log.info(e.getMessage());
+    }
+  }
+
 
   @Override
   public void destroy() {
