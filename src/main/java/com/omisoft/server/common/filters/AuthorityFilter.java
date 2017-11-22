@@ -2,9 +2,10 @@ package com.omisoft.server.common.filters;
 
 import static com.omisoft.server.common.constants.CommonConstants.AUTHORIZATION_HEADER;
 
-import com.nimbusds.jwt.JWTClaimsSet;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.omisoft.server.common.auth.AuthUtils;
 import com.omisoft.server.common.auth.UserAuthority;
+import com.omisoft.server.common.dto.ErrorDTO;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 
 
 /**
@@ -34,6 +34,9 @@ public class AuthorityFilter implements Filter {
 
   @Inject
   private UserAuthority authority;
+
+  @Inject
+  private ObjectMapper mapper;
 
   @Override
   public void init(FilterConfig filterConfig) throws ServletException {
@@ -54,7 +57,9 @@ public class AuthorityFilter implements Filter {
     Cookie authCookie;
     if (StringUtils.isBlank(authHeader) || authHeader.equals("null")) {
       if (cokkies == null || cokkies.length == 0) {
-        httpResponse.sendError(401);
+//        httpResponse.sendError(401);
+        httpResponse.sendError(401,
+            mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
         return;
       }
       for (Cookie c : cokkies) {
@@ -73,7 +78,9 @@ public class AuthorityFilter implements Filter {
       }
 
       if ((StringUtils.isBlank(authHeader) || !authority.isExist(authHeader))) {
-        httpResponse.sendError(401);
+//        httpResponse.sendError(401);
+        httpResponse.sendError(401,
+            mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
         return;
       }
 
@@ -82,7 +89,9 @@ public class AuthorityFilter implements Filter {
       // ensure that the token is not expired
 
       if (AuthUtils.expired(authHeader)) {
-        httpResponse.sendError(401);
+//        httpResponse.sendError(401);
+        httpResponse.sendError(401,
+            mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
         return;
       }
 
@@ -90,7 +99,9 @@ public class AuthorityFilter implements Filter {
     } catch (Throwable e) {
       e.printStackTrace();
       log.info(e.getMessage());
-      httpResponse.sendError(401);
+//      httpResponse.sendError(401);
+      httpResponse.sendError(401,
+          mapper.writeValueAsString(new ErrorDTO("Unauthorized", "Please try logging in again")));
       return;
     }
     log.info(String.valueOf(httpResponse.getStatus()));
