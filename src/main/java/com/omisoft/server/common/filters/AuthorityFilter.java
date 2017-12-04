@@ -54,7 +54,7 @@ public class AuthorityFilter implements Filter {
     Cookie authCookie;
     if (StringUtils.isBlank(authHeader) || authHeader.equals("null")) {
       if (cokkies == null || cokkies.length == 0) {
-        httpResponse.sendError(401);
+        httpResponse.sendError(403);
         return;
       }
       for (Cookie c : cokkies) {
@@ -73,7 +73,7 @@ public class AuthorityFilter implements Filter {
       }
 
       if ((StringUtils.isBlank(authHeader) || !authority.isExist(authHeader))) {
-        httpResponse.sendError(401);
+        httpResponse.sendError(403);
         return;
       }
 
@@ -82,7 +82,7 @@ public class AuthorityFilter implements Filter {
       // ensure that the token is not expired
 
       if (AuthUtils.expired(authHeader)) {
-        httpResponse.sendError(401);
+        httpResponse.sendError(403);
         return;
       }
 
@@ -90,7 +90,7 @@ public class AuthorityFilter implements Filter {
     } catch (Throwable e) {
       e.printStackTrace();
       log.info(e.getMessage());
-      httpResponse.sendError(401);
+      httpResponse.sendError(403);
       return;
     }
     log.info(String.valueOf(httpResponse.getStatus()));
