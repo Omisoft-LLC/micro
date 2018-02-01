@@ -1,9 +1,9 @@
-package com.omisoft.server.common.entities;
+package com.omisoft.micro.common.entities;
 
-import static com.omisoft.server.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
+import static com.omisoft.micro.common.entities.BaseEntity.IS_ACTIVE_FILTER_NAME;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.omisoft.server.common.di.InjectorHolder;
+import com.omisoft.micro.common.di.InjectorHolder;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
@@ -18,7 +18,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Query;
 import javax.persistence.Transient;
-import javax.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;

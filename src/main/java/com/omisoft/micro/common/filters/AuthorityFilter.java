@@ -1,11 +1,11 @@
-package com.omisoft.server.common.filters;
+package com.omisoft.micro.common.filters;
 
-import static com.omisoft.server.common.constants.CommonConstants.AUTHORIZATION_HEADER;
+import static com.omisoft.micro.common.constants.CommonConstants.AUTHORIZATION_HEADER;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.omisoft.server.common.auth.AuthUtils;
-import com.omisoft.server.common.auth.UserAuthority;
-import com.omisoft.server.common.dto.ErrorDTO;
+import com.omisoft.micro.common.auth.AuthUtils;
+import com.omisoft.micro.common.auth.UserAuthority;
+import com.omisoft.micro.common.dto.ErrorDTO;
 import java.io.IOException;
 import javax.inject.Inject;
 import javax.inject.Singleton;

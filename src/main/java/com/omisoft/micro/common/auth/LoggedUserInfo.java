@@ -1,4 +1,4 @@
-package com.omisoft.server.common.auth;
+package com.omisoft.micro.common.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.omisoft.server.common.di;
+package com.omisoft.micro.common.di;
 
 import com.google.inject.Injector;
 

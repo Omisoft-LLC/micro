@@ -1,4 +1,4 @@
-package com.omisoft.server.common.filters;
+package com.omisoft.micro.common.filters;
 
 import java.io.IOException;
 import javax.inject.Inject;
@@ -58,7 +58,7 @@ public class PersistFilter implements Filter {
         log.error("Could not rollback transaction after exception!", rbEx);
       }
 
-      // Let others handle it... maybe another interceptor for com.omisoft.server.common.exceptions?
+      // Let others handle it... maybe another interceptor for com.omisoft.micro.common.exceptions?
       throw new ServletException(ex);
     }
   }

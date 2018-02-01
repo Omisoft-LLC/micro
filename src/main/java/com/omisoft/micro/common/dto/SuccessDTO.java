@@ -1,4 +1,4 @@
-package com.omisoft.server.common.dto;
+package com.omisoft.micro.common.dto;
 
 import lombok.Getter;
 import lombok.Setter;

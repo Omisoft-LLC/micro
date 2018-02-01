@@ -1,4 +1,4 @@
-package com.omisoft.server.common.exceptions;
+package com.omisoft.micro.common.exceptions;
 
 /**
  * Keystore operation exception Ceated by dido on 17.12.16.

@@ -1,4 +1,4 @@
-package com.omisoft.server.common.exceptions;
+package com.omisoft.micro.common.exceptions;
 
 /**
  * Created by leozhekov on 11/18/16. Exception that is thrown whenever the query to the db returns

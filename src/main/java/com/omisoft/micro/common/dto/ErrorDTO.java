@@ -1,6 +1,6 @@
-package com.omisoft.server.common.dto;
+package com.omisoft.micro.common.dto;
 
-import com.omisoft.server.common.enums.Severity;
+import com.omisoft.micro.common.enums.Severity;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;

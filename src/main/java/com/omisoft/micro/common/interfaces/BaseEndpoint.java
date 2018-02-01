@@ -1,4 +1,4 @@
-package com.omisoft.server.common.interfaces;
+package com.omisoft.micro.common.interfaces;
 
 /**
  * Base REST endpoint

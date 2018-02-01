@@ -1,9 +1,9 @@
-package com.omisoft.server.common.serializers;
+package com.omisoft.micro.common.serializers;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.omisoft.server.common.structures.SecureString;
+import com.omisoft.micro.common.structures.SecureString;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 

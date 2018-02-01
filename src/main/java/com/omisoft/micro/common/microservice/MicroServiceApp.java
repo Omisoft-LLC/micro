@@ -1,13 +1,13 @@
-package com.omisoft.server.common.microservice;
+package com.omisoft.micro.common.microservice;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.servlet.GuiceFilter;
-import com.omisoft.server.common.di.InjectorHolder;
-import com.omisoft.server.common.interfaces.WebSocket;
-import com.omisoft.server.common.metrics.MetricsService;
-import com.omisoft.server.common.utils.InetUtils;
+import com.omisoft.micro.common.di.InjectorHolder;
+import com.omisoft.micro.common.interfaces.WebSocket;
+import com.omisoft.micro.common.metrics.MetricsService;
+import com.omisoft.micro.common.utils.InetUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -160,7 +160,7 @@ public class MicroServiceApp {
           instance.stop();
           log.info("SERVICE " + serviceName + " STOPPED!!!");
         } catch (Exception e) {
-          log.error("Exception during server stop in shutdown hook", e);
+          log.error("Exception during micro stop in shutdown hook", e);
         }
       }
     });
@@ -316,7 +316,7 @@ public class MicroServiceApp {
     webAppContext.setBaseResource(new ResourceCollection(new String[]{webDir}));
     webAppContext.setDescriptor(webDir + "/WEB-INF/web.xml");
     webAppContext.setWelcomeFiles(new String[]{"/secure/index.html"});
-    webAppContext.setAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
+    webAppContext.setAttribute("org.eclipse.jetty.micro.webapp.ContainerIncludeJarPattern",
         ".*/target/classes/*|.*/[^/]*servlet-api-[^/]*\\\\.jar$|.*/javax.servlet.jsp.jstl-.*\\\\.jar$|.*/[^/]*taglibs.*\\\\.jar$");
     handlers.add(webAppContext);
     return this;
@@ -336,8 +336,8 @@ public class MicroServiceApp {
     INSTANCE = this;
 
     // Set Form Limits
-    server.setAttribute("org.eclipse.jetty.server.Request.maxFormContentSize", 10000);
-    server.setAttribute("org.eclipse.jetty.server.Request.maxFormKeys", 200);
+    server.setAttribute("org.eclipse.jetty.micro.Request.maxFormContentSize", 10000);
+    server.setAttribute("org.eclipse.jetty.micro.Request.maxFormKeys", 200);
 
     MetricsService.initMetrics(Thread.currentThread().getStackTrace()[1].getClassName());
 
@@ -372,7 +372,7 @@ public class MicroServiceApp {
 
 
   /**
-   * Stop server. Code is executed by shutdown hook
+   * Stop micro. Code is executed by shutdown hook
    */
   protected void stop() {
     try {

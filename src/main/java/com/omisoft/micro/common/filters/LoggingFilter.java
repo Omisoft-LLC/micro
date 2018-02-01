@@ -1,4 +1,4 @@
-package com.omisoft.server.common.filters;
+package com.omisoft.micro.common.filters;
 
 import java.io.IOException;
 import java.util.Enumeration;

@@ -1,4 +1,4 @@
-package com.omisoft.server.common.utils;
+package com.omisoft.micro.common.utils;
 
 import java.io.IOException;
 import java.net.Inet4Address;

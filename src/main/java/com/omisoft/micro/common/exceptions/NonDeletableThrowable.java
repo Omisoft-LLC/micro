@@ -1,4 +1,4 @@
-package com.omisoft.server.common.exceptions;
+package com.omisoft.micro.common.exceptions;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

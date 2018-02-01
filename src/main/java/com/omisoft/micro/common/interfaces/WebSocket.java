@@ -1,4 +1,4 @@
-package com.omisoft.server.common.interfaces;
+package com.omisoft.micro.common.interfaces;
 
 /**
  * All web sockets must implement this interface

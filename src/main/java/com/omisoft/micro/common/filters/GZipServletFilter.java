@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.omisoft.server.common.filters;
+package com.omisoft.micro.common.filters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

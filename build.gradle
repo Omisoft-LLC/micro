@@ -1,4 +1,4 @@
-group 'com.omisoft.server'
+group 'com.omisoft.micro'
 
 version '1.0'
 
@@ -11,32 +11,8 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
-
-    maven { url 'http://repo.omisoft.eu:8081/artifactory/virtual' }
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-
-    repositories {
-
-        maven {
-            credentials {
-                username 'admin'
-                password 'asdqwe123@'
-            }
-            if (project.version.endsWith('-SNAPSHOT'))
-                url "http://repo.omisoft.eu:8081/artifactory/libs-snapshot-local"
-            else
-                url "http://repo.omisoft.eu:8081/artifactory/libs-release-local"
-        }
-
-    }
-}
 
 
 
@@ -56,9 +32,9 @@ dependencies {
     compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '3.2.2'
     compile group: 'io.dropwizard.metrics', name: 'metrics-json', version: '3.2.2'
     compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: '3.2.2'
-    compile group: 'org.eclipse.jetty', name: 'jetty-server', version: jetty_version
+    compile group: 'org.eclipse.jetty', name: 'jetty-micro', version: jetty_version
     compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: jetty_version
-    compile group: 'org.eclipse.jetty.websocket', name: 'javax-websocket-server-impl', version: jetty_version
+    compile group: 'org.eclipse.jetty.websocket', name: 'javax-websocket-micro-impl', version: jetty_version
     compile group: 'org.eclipse.jetty', name: 'jetty-jmx', version: jetty_version
     compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jetty_version
     compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '3.1.1.Final'

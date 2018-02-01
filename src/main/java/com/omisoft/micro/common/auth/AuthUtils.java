@@ -1,4 +1,4 @@
-package com.omisoft.server.common.auth;
+package com.omisoft.micro.common.auth;
 
 
 import com.nimbusds.jose.JOSEException;
@@ -9,7 +9,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.omisoft.server.common.exceptions.SecurityException;
+import com.omisoft.micro.common.exceptions.SecurityException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;

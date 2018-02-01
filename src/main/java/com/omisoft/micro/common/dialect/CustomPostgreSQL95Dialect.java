@@ -1,4 +1,4 @@
-package com.omisoft.server.common.dialect;
+package com.omisoft.micro.common.dialect;
 
 import java.sql.Types;
 import org.hibernate.dialect.PostgreSQL95Dialect;

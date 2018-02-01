@@ -1,9 +1,9 @@
-package com.omisoft.server.common.dao;
+package com.omisoft.micro.common.dao;
 
 
-import com.omisoft.server.common.entities.BaseEntity;
-import com.omisoft.server.common.exceptions.DataBaseException;
-import com.omisoft.server.common.exceptions.NotFoundException;
+import com.omisoft.micro.common.entities.BaseEntity;
+import com.omisoft.micro.common.exceptions.DataBaseException;
+import com.omisoft.micro.common.exceptions.NotFoundException;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +42,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
       return found;
     } else {
       throw new NotFoundException(
-          "Could not find all com.omisoft.server.common.entities from type: " + type.getSimpleName()
+          "Could not find all com.omisoft.micro.common.entities from type: " + type.getSimpleName()
               + "\n" + q.toString());
     }
   }
@@ -117,7 +117,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
   }
 
   /**
-   * Saves or updates all com.omisoft.server.common.entities from collection.
+   * Saves or updates all com.omisoft.micro.common.entities from collection.
    *
    * @param collection collection to save.
    */
@@ -144,7 +144,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
   }
 
   /**
-   * Base method to get entity manager Use this to enable com.omisoft.server.common.filters
+   * Base method to get entity manager Use this to enable com.omisoft.micro.common.filters
    */
 
   public EntityManager getEntityManager() {

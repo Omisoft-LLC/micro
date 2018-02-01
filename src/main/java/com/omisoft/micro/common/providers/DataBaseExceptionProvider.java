@@ -1,8 +1,8 @@
-package com.omisoft.server.common.providers;
+package com.omisoft.micro.common.providers;
 
 
-import com.omisoft.server.common.dto.ErrorDTO;
-import com.omisoft.server.common.exceptions.DataBaseException;
+import com.omisoft.micro.common.dto.ErrorDTO;
+import com.omisoft.micro.common.exceptions.DataBaseException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;

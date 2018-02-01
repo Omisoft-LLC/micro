@@ -1,4 +1,4 @@
-package com.omisoft.server.common.microservice;
+package com.omisoft.micro.common.microservice;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -37,7 +37,7 @@ public class ShutdownMonitor extends Thread {
       BufferedReader reader = new BufferedReader(
           new InputStreamReader(accept.getInputStream(), "UTF-8"));
       reader.readLine();
-      System.out.println("*** stopping jetty embedded server");
+      System.out.println("*** stopping jetty embedded micro");
       server.stop();
       accept.close();
       socket.close();

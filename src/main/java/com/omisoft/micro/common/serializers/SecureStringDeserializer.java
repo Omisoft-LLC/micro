@@ -1,9 +1,9 @@
-package com.omisoft.server.common.serializers;
+package com.omisoft.micro.common.serializers;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.omisoft.server.common.structures.SecureString;
+import com.omisoft.micro.common.structures.SecureString;
 import java.io.IOException;
 
 /**

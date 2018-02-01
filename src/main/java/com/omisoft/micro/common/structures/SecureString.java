@@ -1,9 +1,9 @@
-package com.omisoft.server.common.structures;
+package com.omisoft.micro.common.structures;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.omisoft.server.common.serializers.SecureStringDeserializer;
-import com.omisoft.server.common.serializers.SecureStringSerializer;
+import com.omisoft.micro.common.serializers.SecureStringDeserializer;
+import com.omisoft.micro.common.serializers.SecureStringSerializer;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;

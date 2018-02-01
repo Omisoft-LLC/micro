@@ -1,4 +1,4 @@
-package com.omisoft.server.common.auth;
+package com.omisoft.micro.common.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

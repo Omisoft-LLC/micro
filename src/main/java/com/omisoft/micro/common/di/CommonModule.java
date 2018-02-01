@@ -1,9 +1,9 @@
-package com.omisoft.server.common.di;
+package com.omisoft.micro.common.di;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.omisoft.server.common.auth.UserAuthority;
+import com.omisoft.micro.common.auth.UserAuthority;
 
 /**
  * Created by dido on 03.05.17.

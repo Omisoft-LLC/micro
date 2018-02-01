@@ -1,4 +1,4 @@
-package com.omisoft.server.common.microservice;
+package com.omisoft.micro.common.microservice;
 
 /**
  * Holds dependencies for microservices

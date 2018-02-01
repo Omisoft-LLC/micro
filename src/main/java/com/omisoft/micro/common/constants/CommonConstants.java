@@ -1,4 +1,4 @@
-package com.omisoft.server.common.constants;
+package com.omisoft.micro.common.constants;
 
 /**
  * Holds common constants

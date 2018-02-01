@@ -1,4 +1,4 @@
-package com.omisoft.server.common.metrics;
+package com.omisoft.micro.common.metrics;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;

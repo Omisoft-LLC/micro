@@ -1,4 +1,4 @@
-package com.omisoft.server.common.enums;
+package com.omisoft.micro.common.enums;
 
 /**
  * Error levels Created by nslavov on 3/28/16.
