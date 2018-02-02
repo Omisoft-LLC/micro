@@ -1,8 +1,7 @@
 package com.omisoft.micro.common.microservice;
 
 /**
- * Microservice list
- * Created by dido on 30.05.16.
+ * Microservice list Created by dido on 30.05.16.
  */
 public enum MicroServiceNameEnum {
   KEEPASSA_BACKEND("KEEPASSA-BACKEND");

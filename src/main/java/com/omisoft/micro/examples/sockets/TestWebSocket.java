@@ -1,10 +1,8 @@
 package com.omisoft.micro.examples.sockets;
 
 import com.google.inject.Inject;
-
 import com.omisoft.micro.common.di.GuiceWebSocketConfigurator;
 import com.omisoft.micro.common.interfaces.WebSocket;
-import com.omisoft.micro.examples.RestUrl;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnOpen;
@@ -45,7 +43,7 @@ public class TestWebSocket implements WebSocket {
 
   @OnError
   public void onWebSocketError(Session sess, Throwable throwable) {
-    log.error("Stat socket error",throwable);
+    log.error("Stat socket error", throwable);
 
   }
 

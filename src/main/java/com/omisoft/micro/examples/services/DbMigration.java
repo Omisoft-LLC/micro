@@ -1,7 +1,6 @@
 package com.omisoft.micro.examples.services;
 
 
-
 import static com.omisoft.micro.common.constants.CommonConstants.DEV;
 import static com.omisoft.micro.common.constants.CommonConstants.DEV_TRUE;
 import static com.omisoft.micro.examples.configuration.ServerConstants.DB_PASSWORD;
@@ -23,12 +22,13 @@ public class DbMigration {
     Flyway flyway = new Flyway();
     flyway.setValidateOnMigrate(false);
     flyway.setDataSource(
-        Configuration.getInstance().getProp().getProperty(DB_URL),Configuration.getInstance().getProp().getProperty(DB_USER),
+        Configuration.getInstance().getProp().getProperty(DB_URL),
+        Configuration.getInstance().getProp().getProperty(DB_USER),
         Configuration.getInstance().getProp().getProperty(DB_PASSWORD));
     flyway.setSchemas("public");
     flyway.setSqlMigrationSeparator("_");
     String dev = System.getProperty(DEV);
-    if(dev != null && DEV_TRUE.equals(dev)){
+    if (dev != null && DEV_TRUE.equals(dev)) {
       flyway.setSqlMigrationPrefix("D");
       log.info("services SET DEV MODE");
     } else {

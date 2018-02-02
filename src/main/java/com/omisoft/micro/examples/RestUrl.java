@@ -6,8 +6,8 @@ package com.omisoft.micro.examples;
 public final class RestUrl {
 
 
-
-  private RestUrl(){}
+  private RestUrl() {
+  }
 
 
   public static final String LOGOUT = "/logout";

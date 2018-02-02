@@ -9,8 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Holds Logged users
- * Created by nslavov on 3/25/16.
+ * Holds Logged users Created by nslavov on 3/25/16.
  */
 public class UserAuthority {
 

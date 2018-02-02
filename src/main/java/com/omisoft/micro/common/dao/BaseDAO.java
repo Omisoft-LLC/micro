@@ -95,6 +95,7 @@ public abstract class BaseDAO<T extends BaseEntity> {
 
   /**
    * Saves an entity
+   *
    * @param entity to save
    * @return attached entity
    * @throws DataBaseException error

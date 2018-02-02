@@ -8,8 +8,7 @@ import javax.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Mapper for Secure Keystore Exception
- * Created by dido on 16.03.17.
+ * Mapper for Secure Keystore Exception Created by dido on 16.03.17.
  */
 @Provider
 @Slf4j

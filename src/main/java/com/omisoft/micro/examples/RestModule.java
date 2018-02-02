@@ -15,8 +15,7 @@ import org.jboss.resteasy.plugins.guice.GuiceResteasyBootstrapServletContextList
 import org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher;
 
 /**
- * All redis resources should be described here
- * Created by dido on 12/6/16.
+ * All redis resources should be described here Created by dido on 12/6/16.
  */
 @Slf4j
 public class RestModule extends ServletModule {
@@ -44,10 +43,8 @@ public class RestModule extends ServletModule {
     bind(NotFoundExceptionProvider.class);
     bind(GenericExceptionProvider.class);
 
-
     // Add Endpoints
     bind(TestEndpoint.class);
-
 
     if (path == null) {
       serve("/*").with(HttpServletDispatcher.class);

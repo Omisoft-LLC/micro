@@ -40,6 +40,7 @@ import org.hibernate.annotations.UpdateTimestamp;
     parameters = @ParamDef(name = "isActive", type = "boolean"))
 @Filters({@Filter(name = IS_ACTIVE_FILTER_NAME, condition = "is_active=:isActive")})
 public abstract class BaseEntity implements Serializable {
+
   @Transient
   @JsonIgnore
   @Inject
@@ -68,13 +69,11 @@ public abstract class BaseEntity implements Serializable {
   private Date createdOn;
 
 
-
   @Column(name = "is_active", columnDefinition = "BOOLEAN default true")
   private Boolean isActive = Boolean.TRUE;
 
   /**
    * Entity Manager.
-   * @return
    */
   public EntityManager getEntityManager() {
     InjectorHolder.getInjector().injectMembers(this);
@@ -82,6 +81,7 @@ public abstract class BaseEntity implements Serializable {
     return this.entityManager;
 
   }
+
   public BaseEntity() {
   }
 

@@ -8,8 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * ErrorDTO, transfers error messages to clients
- * Created by leozhekov on 11/1/16.
+ * ErrorDTO, transfers error messages to clients Created by leozhekov on 11/1/16.
  */
 @Getter
 @Setter

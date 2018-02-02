@@ -2,8 +2,7 @@ package com.omisoft.micro.common.exceptions;
 
 
 /**
- * Created by leozhekov on 11/16/16.
- * Exception that is thrown whenever there's a problem with the
+ * Created by leozhekov on 11/16/16. Exception that is thrown whenever there's a problem with the
  * database connection or transaction.
  */
 public class DataBaseException extends Exception {

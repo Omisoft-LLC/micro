@@ -1,8 +1,7 @@
 package com.omisoft.micro.common.constants;
 
 /**
- * Holds common constants
- * Created by dido on 06.04.17.
+ * Holds common constants Created by dido on 06.04.17.
  */
 public class CommonConstants {
 

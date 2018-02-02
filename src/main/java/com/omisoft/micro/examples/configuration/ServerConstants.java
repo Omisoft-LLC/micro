@@ -20,5 +20,4 @@ public final class ServerConstants {
   public static final String DB_PASSWORD = "hibernate.hikari.dataSource.password";
 
 
-
 }

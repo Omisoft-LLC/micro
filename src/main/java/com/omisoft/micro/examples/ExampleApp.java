@@ -12,11 +12,12 @@ import com.omisoft.micro.examples.sockets.TestWebSocket;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class ExampleApp extends MicroServiceApp{
+public class ExampleApp extends MicroServiceApp {
+
   public static void main(String[] args) throws Exception {
-    System.setProperty(DEV,DEV_TRUE);
+    System.setProperty(DEV, DEV_TRUE);
     int port = 8080;
-    if(args.length > 0){
+    if (args.length > 0) {
       log.info(args[0]);
       port = Integer.parseInt(args[0]);
     }
@@ -24,7 +25,8 @@ public class ExampleApp extends MicroServiceApp{
     dbMigration.start();
     ExampleApp mainApp = new ExampleApp();
     mainApp.addHttp(port).addJmxSupport()
-        .addDISupport(new CommonModule(), new DependencyModule(), new DbModule("testPersistenceUnit",
+        .addDISupport(new CommonModule(), new DependencyModule(),
+            new DbModule("testPersistenceUnit",
                 Configuration.getInstance().getProp()),
             new ApplicationServletModule(), new RestModule())
         .addWebSockets(RestUrl.WS_PATH, TestWebSocket.class)

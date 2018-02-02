@@ -8,8 +8,7 @@ import javax.ws.rs.ext.Provider;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Validation Exception provider
- * Created by dido on 06.04.17.
+ * Validation Exception provider Created by dido on 06.04.17.
  */
 @Provider
 @Slf4j

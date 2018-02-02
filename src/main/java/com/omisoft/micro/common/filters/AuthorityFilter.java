@@ -23,9 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 
 
 /**
- * Authorization filter for REST services.
- * Works with JWT header
- * Created by nslavov on 3/25/16.
+ * Authorization filter for REST services. Works with JWT header Created by nslavov on 3/25/16.
  */
 @Singleton
 @Slf4j

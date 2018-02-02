@@ -14,7 +14,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class DbModule extends AbstractModule {
-  public static  EntityManagerFactory emf;
+
+  public static EntityManagerFactory emf;
 
   private final String persistenceUnitName;
   private final Properties props;

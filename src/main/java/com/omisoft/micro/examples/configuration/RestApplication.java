@@ -16,7 +16,7 @@ public class RestApplication extends Application {
   public Set<Object> getSingletons() {
     HashSet<Object> set = new HashSet<>();
 
-     set.add(new TestEndpoint());
+    set.add(new TestEndpoint());
     return set;
   }
 }

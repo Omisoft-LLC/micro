@@ -1,8 +1,7 @@
 package com.omisoft.micro.common.microservice;
 
 /**
- * Holds dependencies for microservices
- * Created by dido on 10.08.16.
+ * Holds dependencies for microservices Created by dido on 10.08.16.
  */
 public enum DependenciesEnum {
   DB("omibox-db", 5432), RABBITMQ("omibox-rabbitmq", 5672), REDIS("omibox-redis", 6379), REGISTRY(

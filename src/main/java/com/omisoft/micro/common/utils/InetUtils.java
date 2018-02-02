@@ -10,8 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Various Inet utility methods
- * Created by dido on 22.06.16.
+ * Various Inet utility methods Created by dido on 22.06.16.
  */
 @Slf4j
 public class InetUtils {
