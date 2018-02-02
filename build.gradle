@@ -3,7 +3,6 @@ group 'com.omisoft.micro'
 version '1.0'
 
 apply plugin: 'java'
-apply plugin: 'maven-publish'
 
 
 sourceCompatibility = 1.8
@@ -12,7 +11,6 @@ repositories {
     mavenCentral()
     jcenter()
 }
-
 
 
 
@@ -32,11 +30,11 @@ dependencies {
     compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: '3.2.2'
     compile group: 'io.dropwizard.metrics', name: 'metrics-json', version: '3.2.2'
     compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: '3.2.2'
-    compile group: 'org.eclipse.jetty', name: 'jetty-micro', version: jetty_version
     compile group: 'org.eclipse.jetty', name: 'jetty-webapp', version: jetty_version
-    compile group: 'org.eclipse.jetty.websocket', name: 'javax-websocket-micro-impl', version: jetty_version
     compile group: 'org.eclipse.jetty', name: 'jetty-jmx', version: jetty_version
     compile group: 'org.eclipse.jetty', name: 'jetty-servlet', version: jetty_version
+    compile group: 'org.eclipse.jetty.websocket', name: 'javax-websocket-server-impl', version: jetty_version
+
     compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '3.1.1.Final'
     compile 'org.jboss.resteasy:resteasy-servlet-initializer:3.1.1.Final'
     compile group: 'org.jboss.resteasy', name: 'resteasy-guice', version: '3.1.1.Final'
@@ -45,6 +43,12 @@ dependencies {
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
     compile group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: '4.34.2'
     compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.2.10.Final'
+    compile 'org.freemarker:freemarker:2.3.23'
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.8'
+    compile group: 'org.hibernate', name: 'hibernate-validator', version: '5.4.1.Final'
+    compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
+    compile group: 'org.flywaydb', name: 'flyway-core', version: '4.2.0'
+
 
 
 }

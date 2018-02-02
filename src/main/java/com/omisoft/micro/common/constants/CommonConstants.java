@@ -8,4 +8,7 @@ public class CommonConstants {
 
   public static final String AUTHORIZATION_HEADER = "authorization";
   public static final String API_KEY = "api_key";
+
+  public static final String DEV = "dev";
+  public static final String DEV_TRUE = "true";
 }
