@@ -16,15 +16,15 @@ public class ExampleApp extends MicroServiceApp {
 
   public static void main(String[] args) throws Exception {
     System.setProperty(DEV, DEV_TRUE);
-    int port = 8080;
+    int port = 8010;
     if (args.length > 0) {
       log.info(args[0]);
       port = Integer.parseInt(args[0]);
     }
-    DbMigration dbMigration = new DbMigration();
-    dbMigration.start();
+//    DbMigration dbMigration = new DbMigration();
+//    dbMigration.start();
     ExampleApp mainApp = new ExampleApp();
-    mainApp.addHttp(port).addJmxSupport()
+    mainApp.setShutdownPort(8179).addHttp(port).addJmxSupport()
         .addDISupport(new CommonModule(), new DependencyModule(),
             new DbModule("testPersistenceUnit",
                 Configuration.getInstance().getProp()),

@@ -17,12 +17,12 @@ public class ShutdownMonitor extends Thread {
   private final Server server;
   private ServerSocket socket;
 
-  public ShutdownMonitor(Server server) {
+  public ShutdownMonitor(Server server, int port) {
     this.server = server;
     setDaemon(true);
     setName(ShutdownMonitor.class.getName());
     try {
-      socket = new ServerSocket(8079, 1, InetAddress.getByName("127.0.0.1"));
+      socket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -60,6 +60,7 @@ public class MicroServiceApp {
   public static MicroServiceApp INSTANCE;
   public static Injector INJECTOR;
   private List<Handler> handlers = new ArrayList<>();
+  private int shutdownPort;
 
   public static final MicroServiceApp getInstance() {
     return INSTANCE;
@@ -73,6 +74,10 @@ public class MicroServiceApp {
     start(name, logs_dir, null);
   }
 
+  public MicroServiceApp setShutdownPort(int port) {
+    this.shutdownPort = port;
+    return this;
+  }
 
   public MicroServiceApp addWebSockets(String webSocketPath,
       Class<? extends WebSocket>... sockets) {
@@ -147,7 +152,7 @@ public class MicroServiceApp {
    * Shutdown hook, handles System.exit and kill -15
    */
   private void addShutdownHook() {
-    Thread shutdownMonitor = new ShutdownMonitor(server);
+    Thread shutdownMonitor = new ShutdownMonitor(server, shutdownPort);
     shutdownMonitor.start();
     isAlive = false;
     final MicroServiceApp instance = this;
