@@ -5,4 +5,4 @@ We are releasing the first public version of the framework under Apache License.
 
 Contributors are welcome.:)
 
-For an example usage check com.omisoft.micro.examples.ExampleApp
+For an example usage check eu.omisoft.micro.examples.ExampleApp

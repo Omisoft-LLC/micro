@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.omisoft.micro.iml" filepath="$PROJECT_DIR$/.idea/modules/com.omisoft.micro.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.omisoft.micro_main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.omisoft.micro_main.iml" group="com.omisoft.micro" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.omisoft.micro_test.iml" filepath="$PROJECT_DIR$/.idea/modules/com.omisoft.micro_test.iml" group="com.omisoft.micro" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eu.omisoft.micro.iml" filepath="$PROJECT_DIR$/.idea/modules/eu.omisoft.micro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eu.omisoft.micro_main.iml" filepath="$PROJECT_DIR$/.idea/modules/eu.omisoft.micro_main.iml" group="eu.omisoft.micro" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eu.omisoft.micro_test.iml" filepath="$PROJECT_DIR$/.idea/modules/eu.omisoft.micro_test.iml" group="eu.omisoft.micro" />
     </modules>
   </component>
 </project>

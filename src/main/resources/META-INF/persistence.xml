@@ -5,11 +5,11 @@
          http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="testPersistenceUnit" transaction-type="RESOURCE_LOCAL">
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <class>com.omisoft.micro.examples.entities.Comment</class>
-    <class>com.omisoft.micro.examples.entities.HumanTask</class>
+      <class>eu.omisoft.micro.examples.entities.Comment</class>
+      <class>eu.omisoft.micro.examples.entities.HumanTask</class>
     <properties>
       <property name="hibernate.dialect"
-        value="com.omisoft.server.common.dialect.CustomPostgreSQL95Dialect"/>
+                value="eu.omisoft.server.common.dialect.CustomPostgreSQL95Dialect"/>
       <!-- Scan for annotated classes and Hibernate mapping XML files -->
       <property name="hibernate.archive.autodetection" value="class, hbm"/>
       <property name="hibernate.hikari.dataSourceClassName"

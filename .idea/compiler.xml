@@ -5,10 +5,10 @@
       <profile default="true" name="Default" enabled="true" />
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="com.omisoft.micro_main" target="1.8" />
-      <module name="com.omisoft.micro_test" target="1.8" />
       <module name="common_main" target="1.8" />
       <module name="common_test" target="1.8" />
+      <module name="eu.omisoft.micro_main" target="1.8" />
+      <module name="eu.omisoft.micro_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
